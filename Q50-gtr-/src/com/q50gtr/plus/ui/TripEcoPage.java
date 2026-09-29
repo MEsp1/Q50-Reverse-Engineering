@@ -29,9 +29,9 @@ public final class TripEcoPage implements Page {
         // Tiles inferiores
         Gauges.tile(c, t, EnginePage.col(0, tw), ty, tw, th, Icons.BATTERY, "BATERÍA HV",
                 d.hybridBatterySoc, 0, "%", Float.NaN, Float.NaN);
-        Gauges.tile(c, t, EnginePage.col(1, tw), ty, tw, th, Icons.ROUTE, "TRAYECTO A",
+        Gauges.tile(c, t, EnginePage.col(1, tw), ty, tw, th, Icons.SPEED, "TRAYECTO A",
                 d.tripDist, 1, "KM", Float.NaN, Float.NaN);
-        Gauges.tile(c, t, EnginePage.col(2, tw), ty, tw, th, Icons.EV, "EV MODE",
+        Gauges.tile(c, t, EnginePage.col(2, tw), ty, tw, th, Icons.SPARK, "EV MODE",
                 d.evModeRatio, 0, "%", Float.NaN, Float.NaN);
         Gauges.tile(c, t, EnginePage.col(3, tw), ty, tw, th, Icons.COOLANT, "HEV TEMP",
                 d.hevBattTemp, 0, "°C", 40f, 50f);

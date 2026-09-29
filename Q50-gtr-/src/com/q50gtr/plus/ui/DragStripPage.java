@@ -32,9 +32,9 @@ public final class DragStripPage implements Page {
                 d.hybridBatterySoc, 0, "%", Float.NaN, Float.NaN);
         Gauges.tile(c, t, EnginePage.col(1, tw), ty, tw, th, Icons.THROTTLE, "0-100 KM/H",
                 d.latG, 2, "SEC", Float.NaN, Float.NaN);
-        Gauges.tile(c, t, EnginePage.col(2, tw), ty, tw, th, Icons.ROUTE, "1/4 MILLA",
+        Gauges.tile(c, t, EnginePage.col(2, tw), ty, tw, th, Icons.SPEED, "1/4 MILLA",
                 d.latG, 2, "SEC", Float.NaN, Float.NaN);
-        Gauges.tile(c, t, EnginePage.col(3, tw), ty, tw, th, Icons.GEAR, "PEAK LONG G",
+        Gauges.tile(c, t, EnginePage.col(3, tw), ty, tw, th, Icons.GEARBOX, "PEAK LONG G",
                 d.longG, 2, "G", Float.NaN, Float.NaN);
     }
 }

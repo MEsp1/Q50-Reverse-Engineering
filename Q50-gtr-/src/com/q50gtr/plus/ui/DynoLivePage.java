@@ -28,13 +28,13 @@ public final class DynoLivePage implements Page {
         float ty = h - 92f;
         float th = 78f;
         
-        Gauges.tile(c, t, EnginePage.col(0, tw), ty, tw, th, Icons.ENGINE, "RPM ENGINE",
+        Gauges.tile(c, t, EnginePage.col(0, tw), ty, tw, th, Icons.KNOCK, "RPM ENGINE",
                 d.rpm, 0, "RPM", 6800f, 7200f);
         Gauges.tile(c, t, EnginePage.col(1, tw), ty, tw, th, Icons.BATTERY, "HEV SOC",
                 d.hybridBatterySoc, 0, "%", Float.NaN, Float.NaN);
-        Gauges.tile(c, t, EnginePage.col(2, tw), ty, tw, th, Icons.GEAR, "GEAR",
+        Gauges.tile(c, t, EnginePage.col(2, tw), ty, tw, th, Icons.GEARBOX, "GEAR",
                 d.speed, 0, "KM/H", Float.NaN, Float.NaN);
-        Gauges.tile(c, t, EnginePage.col(3, tw), ty, tw, th, Icons.EV, "REGEN",
+        Gauges.tile(c, t, EnginePage.col(3, tw), ty, tw, th, Icons.SPARK, "REGEN",
                 d.regenEnergy, 1, "kWh", Float.NaN, Float.NaN);
     }
 }

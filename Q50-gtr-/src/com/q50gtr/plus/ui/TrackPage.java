@@ -30,7 +30,7 @@ public final class TrackPage implements Page {
         
         Gauges.tile(c, t, EnginePage.col(0, tw), ty, tw, th, Icons.THROTTLE, "THROTTLE",
                 d.throttle, 0, "%", Float.NaN, Float.NaN);
-        Gauges.tile(c, t, EnginePage.col(1, tw), ty, tw, th, Icons.PEDAL, "BRAKE REGEN",
+        Gauges.tile(c, t, EnginePage.col(1, tw), ty, tw, th, Icons.THROTTLE, "BRAKE REGEN",
                 d.pedal, 0, "%", Float.NaN, Float.NaN);
         Gauges.tile(c, t, EnginePage.col(2, tw), ty, tw, th, Icons.OIL_TEMP, "OIL TEMP",
                 d.oilTemp, 0, "°C", 125f, 138f);

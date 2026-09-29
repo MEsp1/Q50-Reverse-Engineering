@@ -39,7 +39,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
@@ -57,7 +57,7 @@ jobs:
           yes | sdkmanager --licenses > /dev/null 2>&1 || true
           sdkmanager --install "build-tools;${BUILD_TOOLS}" "platform-tools"
           # aapt, zipalign, apksigner and d8 all live in build-tools.
-          echo "${ANDROID_SDK_ROOT}/build-tools/${BUILD_TOOLS}" >> "$GITHUB_PATH"
+          echo "${ANDROID_HOME}/build-tools/${BUILD_TOOLS}" >> "$GITHUB_PATH"
 
       - name: Show toolchain
         run: |

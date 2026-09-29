@@ -7,6 +7,7 @@
 # Запускать после verify.sh и build-epk.sh.
 #
 set -euo pipefail
+set -x
 
 cd "$(dirname "$0")"
 
@@ -25,7 +26,7 @@ done
 
 field() {
     # Достать значение поля из epk-info.txt: "  version       = 2"
-    grep -m1 "^  $1 " "$OUT_DIR/epk-info.txt" | sed 's/.*= *//' | awk '{print $1}'
+    grep -m1 "^  $1 " "$OUT_DIR/epk-info.txt" | sed 's/.*= *//' | awk '{print $1}' || echo "unknown"
 }
 
 APK_SHA=$(cut -d' ' -f1 "$OUT_DIR/$APK_NAME.sha256")
@@ -37,7 +38,7 @@ EPK_VERSION=$(field version)
 EPK_TYPE=$(field payloadType)
 EPK_BLOCKS=$(field blockCount)
 EPK_KEYSIZE=$(field keySize)
-EPK_INNER=$(grep -m1 "^  #0 " "$OUT_DIR/epk-info.txt" | awk '{print $2}')
+EPK_INNER=$(grep -m1 "^  #0 " "$OUT_DIR/epk-info.txt" | awk '{print $2}' || echo "unknown")
 
 cat > "$OUT" <<EOF
 Q50 GTR+ build provenance

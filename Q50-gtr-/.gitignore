@@ -1,0 +1,15 @@
+build/
+artifact/
+.cache/
+local.properties
+*.iml
+.idea/
+*.apk
+*.ap_
+*.keystore
+*.jks
+*.p12
+*.b64
+*.keystore.b64
+keystore-pass*
+preview-*.png

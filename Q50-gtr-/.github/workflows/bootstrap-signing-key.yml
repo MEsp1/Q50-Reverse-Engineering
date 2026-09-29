@@ -1,0 +1,210 @@
+name: Bootstrap signing key
+
+# Одноразовая настройка постоянного ключа подписи APK.
+#
+# Ключ генерируется здесь, на раннере, и сразу уезжает в секреты репозитория.
+# Ни keystore, ни пароль не попадают в git, в логи, в артефакты и в summary:
+# значения маскируются и передаются в gh через файл, который удаляется в конце.
+#
+# Запускается вручную и ровно один раз. Повторный запуск перезаписал бы ключ,
+# и обновления поверх уже установленного приложения перестали бы ставиться,
+# поэтому существующие секреты по умолчанию не трогаются.
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Введите CREATE, чтобы подтвердить создание постоянного ключа'
+        required: true
+        default: ''
+      overwrite:
+        description: 'Перезаписать существующий ключ (ОПАСНО: ломает обновления)'
+        type: boolean
+        required: false
+        default: false
+
+jobs:
+  bootstrap:
+    name: Создать постоянный ключ подписи
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Проверить подтверждение
+        run: |
+          set -euo pipefail
+          if [ "${{ inputs.confirm }}" != "CREATE" ]; then
+            echo "::error::для запуска введите CREATE в поле confirm"
+            exit 1
+          fi
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Создать ключ и записать секреты
+        env:
+          DEFAULT_TOKEN: ${{ github.token }}
+          BOOTSTRAP_TOKEN: ${{ secrets.Q50_BOOTSTRAP_TOKEN }}
+          OVERWRITE: ${{ inputs.overwrite }}
+        run: |
+          set -euo pipefail
+          umask 077
+
+          probe() {
+            curl -sS -o /dev/null -w "%{http_code}" \
+              -H "Authorization: Bearer $1" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/secrets/public-key"
+          }
+
+          # Права GITHUB_TOKEN не включают секреты — проверяем это здесь, а не
+          # верим на слово: если GitHub когда-нибудь это разрешит, шаг увидит.
+          CODE_DEFAULT=$(probe "$DEFAULT_TOKEN")
+          echo "GITHUB_TOKEN -> HTTP ${CODE_DEFAULT}"
+
+          if [ "$CODE_DEFAULT" = "200" ]; then
+            echo "GITHUB_TOKEN может писать секреты."
+            export GH_TOKEN="$DEFAULT_TOKEN"
+          elif [ -n "${BOOTSTRAP_TOKEN:-}" ]; then
+            CODE_BOOT=$(probe "$BOOTSTRAP_TOKEN")
+            echo "Q50_BOOTSTRAP_TOKEN -> secrets/public-key HTTP ${CODE_BOOT}"
+            if [ "$CODE_BOOT" != "200" ]; then
+              # 403 сам по себе не говорит, что именно не так: токен мог быть
+              # напечатан с опечаткой, не видеть репозиторий, или видеть его,
+              # но без права Secrets. Спрашиваем по очереди.
+              CODE_USER=$(curl -sS -o /dev/null -w "%{http_code}" \
+                -H "Authorization: Bearer ${BOOTSTRAP_TOKEN}" \
+                -H "Accept: application/vnd.github+json" \
+                "https://api.github.com/user")
+              CODE_REPO=$(curl -sS -o /dev/null -w "%{http_code}" \
+                -H "Authorization: Bearer ${BOOTSTRAP_TOKEN}" \
+                -H "Accept: application/vnd.github+json" \
+                "https://api.github.com/repos/${GITHUB_REPOSITORY}")
+
+              echo "  /user                -> HTTP ${CODE_USER}"
+              echo "  /repos/${GITHUB_REPOSITORY} -> HTTP ${CODE_REPO}"
+
+              # Тип токена по префиксу — не секрет и сразу отвечает на вопрос,
+              # какую из двух форм прав вообще нужно смотреть.
+              case "$BOOTSTRAP_TOKEN" in
+                github_pat_*) echo "  тип токена           -> fine-grained" ;;
+                ghp_*)        echo "  тип токена           -> classic" ;;
+                gho_*|ghu_*)  echo "  тип токена           -> OAuth/пользовательский" ;;
+                *)            echo "  тип токена           -> неизвестный формат" ;;
+              esac
+
+              # GitHub сам говорит, что у токена есть и что требуется.
+              HDRS=$(curl -sS -D - -o /dev/null \
+                -H "Authorization: Bearer ${BOOTSTRAP_TOKEN}" \
+                -H "Accept: application/vnd.github+json" \
+                "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/secrets/public-key" \
+                | tr -d '\r')
+              echo "  права у токена (x-oauth-scopes):"
+              echo "$HDRS" | grep -i '^x-oauth-scopes:' | sed 's/^/    /' || echo "    (заголовок не пришёл)"
+              echo "  требуется (x-accepted-github-permissions):"
+              echo "$HDRS" | grep -i '^x-accepted-github-permissions:' | sed 's/^/    /' \
+                || echo "    (заголовок не пришёл)"
+
+              echo "::error::Q50_BOOTSTRAP_TOKEN не даёт доступа к секретам (HTTP ${CODE_BOOT})."
+              if [ "$CODE_USER" = "401" ]; then
+                echo "ДИАГНОЗ: токен недействителен — скопирован не полностью," >&2
+                echo "уже отозван или истёк. Создайте новый и обновите секрет." >&2
+              elif [ "$CODE_REPO" != "200" ]; then
+                echo "ДИАГНОЗ: токен действителен, но не видит этот репозиторий." >&2
+                echo "Для fine-grained токена: Repository access -> Only select" >&2
+                echo "repositories -> выбрать Q50-gtr-." >&2
+              else
+                echo "ДИАГНОЗ: токен действителен и видит репозиторий, но не имеет" >&2
+                echo "права на секреты." >&2
+                echo "  fine-grained: Permissions -> Repository permissions ->" >&2
+                echo "                Secrets -> Read and write" >&2
+                echo "  classic:      отметить scope 'repo'" >&2
+                echo "Права fine-grained токена можно отредактировать, и сама" >&2
+                echo "строка токена при этом не меняется — секрет обновлять не" >&2
+                echo "нужно. Проверьте, что Secrets выставлен в разделе" >&2
+                echo "Repository permissions, а не в Account permissions." >&2
+              fi
+              exit 1
+            fi
+            export GH_TOKEN="$BOOTSTRAP_TOKEN"
+          else
+            echo "::error::нет токена, которым можно записать секреты."
+            echo "" >&2
+            echo "GITHUB_TOKEN этого права не имеет: среди permissions GitHub Actions" >&2
+            echo "секретов нет вовсе, поэтому workflow не может создать секрет сам." >&2
+            echo "Нужен один секрет, созданный вручную:" >&2
+            echo "  Q50_BOOTSTRAP_TOKEN = токен с правом Secrets: Read and write." >&2
+            exit 1
+          fi
+
+          EXISTING=$(gh secret list --repo "${GITHUB_REPOSITORY}" --json name --jq '.[].name' || true)
+          if echo "$EXISTING" | grep -qx "Q50_KEYSTORE_BASE64"; then
+            if [ "$OVERWRITE" != "true" ]; then
+              echo "::error::Q50_KEYSTORE_BASE64 уже существует."
+              echo "Перезапись сменила бы сертификат подписи, и обновления поверх" >&2
+              echo "установленного приложения перестали бы ставиться. Если это всё" >&2
+              echo "же нужно — запустите с overwrite=true." >&2
+              exit 1
+            fi
+            echo "::warning::существующий ключ будет перезаписан по явному запросу"
+          fi
+
+          WORK="${RUNNER_TEMP}/signing"
+          mkdir -p "$WORK"
+
+          # Пароль из системного CSPRNG. Он нигде не печатается: маскируется
+          # сразу и живёт только в файлах, которые удаляются ниже.
+          openssl rand -base64 32 | tr -d '\n' > "$WORK/pass"
+          PASS=$(cat "$WORK/pass")
+          echo "::add-mask::$PASS"
+
+          keytool -genkeypair -noprompt \
+            -keystore "$WORK/q50gtr.keystore" \
+            -alias q50gtr \
+            -storepass "$PASS" -keypass "$PASS" \
+            -keyalg RSA -keysize 2048 -sigalg SHA1withRSA \
+            -validity 10950 \
+            -dname "CN=Q50 GTR Plus, OU=Head Unit, O=Personal, C=RU" 2>&1 \
+            | grep -v '^Warning' || true
+
+          base64 -w0 "$WORK/q50gtr.keystore" > "$WORK/keystore.b64"
+          echo "::add-mask::$(cat "$WORK/keystore.b64")"
+          printf 'q50gtr' > "$WORK/alias"
+
+          gh secret set Q50_KEYSTORE_BASE64 --repo "${GITHUB_REPOSITORY}" < "$WORK/keystore.b64"
+          gh secret set Q50_KEY_ALIAS       --repo "${GITHUB_REPOSITORY}" < "$WORK/alias"
+          gh secret set Q50_KEY_PASS        --repo "${GITHUB_REPOSITORY}" < "$WORK/pass"
+
+          # Отпечаток сертификата публичен — именно он потом закрепляется в
+          # release-signing-cert.sha256.
+          FP=$(keytool -list -v -keystore "$WORK/q50gtr.keystore" -alias q50gtr \
+                 -storepass "$PASS" 2>/dev/null \
+               | grep -m1 'SHA256:' | sed 's/.*SHA256: //' | tr -d ': ' | tr 'A-Z' 'a-z')
+
+          shred -u "$WORK/pass" "$WORK/keystore.b64" "$WORK/alias" \
+                   "$WORK/q50gtr.keystore" 2>/dev/null || true
+          rm -rf "$WORK"
+
+          {
+            echo "### Постоянный ключ подписи создан"
+            echo ""
+            echo "Записаны секреты \`Q50_KEYSTORE_BASE64\`, \`Q50_KEY_ALIAS\`, \`Q50_KEY_PASS\`."
+            echo ""
+            echo "Сертификат (публичное значение), SHA-256:"
+            echo ""
+            echo '```'
+            echo "${FP}"
+            echo '```'
+            echo ""
+            echo "Временный keystore и пароль удалены с раннера."
+            echo ""
+            echo "Если для запуска заводился \`Q50_BOOTSTRAP_TOKEN\` — и его, и сам"
+            echo "токен теперь можно удалить: больше они не нужны."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          echo "signer certificate SHA-256: ${FP}"

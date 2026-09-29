@@ -1,0 +1,53 @@
+name: Move tag
+
+# Maintenance only: points an existing tag at a different commit, for when a
+# release was cut from the wrong one. Run it by hand, never automatically —
+# moving a published tag changes what everyone else sees under that name.
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to move, e.g. v0.6'
+        required: true
+      sha:
+        description: 'Commit SHA the tag should point at'
+        required: true
+
+jobs:
+  retag:
+    name: Move ${{ inputs.tag }}
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Move tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+          SHA: ${{ inputs.sha }}
+        run: |
+          set -euo pipefail
+
+          # Fail loudly rather than creating a tag on a commit that does not
+          # exist, which would be silently useless.
+          gh api "repos/${GITHUB_REPOSITORY}/commits/${SHA}" --jq '.sha' > /dev/null
+
+          if gh api "repos/${GITHUB_REPOSITORY}/git/refs/tags/${TAG}" > /dev/null 2>&1; then
+            OLD=$(gh api "repos/${GITHUB_REPOSITORY}/git/refs/tags/${TAG}" --jq '.object.sha')
+            echo "Tag ${TAG} is at ${OLD}"
+            gh api --method PATCH "repos/${GITHUB_REPOSITORY}/git/refs/tags/${TAG}" \
+              -f sha="${SHA}" -F force=true --jq '.object.sha'
+          else
+            echo "Tag ${TAG} does not exist yet; creating it."
+            gh api --method POST "repos/${GITHUB_REPOSITORY}/git/refs" \
+              -f ref="refs/tags/${TAG}" -f sha="${SHA}" --jq '.object.sha'
+          fi
+
+          NEW=$(gh api "repos/${GITHUB_REPOSITORY}/git/refs/tags/${TAG}" --jq '.object.sha')
+          echo "Tag ${TAG} now at ${NEW}"
+          [ "$NEW" = "$SHA" ] || { echo "Tag did not move" >&2; exit 1; }
+
+          echo "### Tag \`${TAG}\` -> \`${NEW}\`" >> "$GITHUB_STEP_SUMMARY"

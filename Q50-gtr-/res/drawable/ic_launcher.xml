@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Launcher icon drawn with plain shapes so that no bitmap assets and no
+     vector-drawable support library are needed on old head units. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#FF05070A" />
+            <stroke android:width="3dp" android:color="#FF6B5CFF" />
+        </shape>
+    </item>
+    <item android:top="12dp" android:bottom="12dp" android:left="12dp" android:right="12dp">
+        <shape android:shape="oval">
+            <stroke android:width="2dp" android:color="#FFC8CDD4" />
+        </shape>
+    </item>
+</layer-list>

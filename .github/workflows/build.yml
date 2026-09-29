@@ -1,0 +1,301 @@
+name: Build APK
+
+on:
+  push:
+    branches:
+      - main
+      - 'claude/**'
+    tags:
+      - 'v*'
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: 'Publish a release under this tag (e.g. v0.7). Leave empty to only build.'
+        required: false
+        default: ''
+
+jobs:
+  apk:
+    name: Q50 GTR+ v0.7 APK + EPK (API 9)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./Q50-gtr-
+
+    # Only the tag/dispatch builds publish, and only to this repository.
+    permissions:
+      contents: write
+
+    env:
+      BUILD_TOOLS: "33.0.2"
+      APK_NAME: "Q50-GTR-Plus-v0.7.apk"
+      EPK_NAME: "Q50-GTR-Plus-v0.7.epk"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          # The action's default package set still asks for the retired
+          # "tools" package, which no longer exists in the repository.
+          packages: ''
+
+      - name: Install SDK packages
+        run: |
+          set -euo pipefail
+          yes | sdkmanager --licenses > /dev/null 2>&1 || true
+          sdkmanager --install "build-tools;${BUILD_TOOLS}" "platform-tools"
+          # aapt, zipalign, apksigner and d8 all live in build-tools.
+          echo "${ANDROID_SDK_ROOT}/build-tools/${BUILD_TOOLS}" >> "$GITHUB_PATH"
+
+      - name: Show toolchain
+        run: |
+          set -euo pipefail
+          aapt version
+          apksigner --version
+          d8 --version | head -1
+          java -version 2>&1 | head -1
+
+      - name: Restore signing key
+        env:
+          KEYSTORE_B64: ${{ secrets.Q50_KEYSTORE_BASE64 }}
+          KEY_ALIAS: ${{ secrets.Q50_KEY_ALIAS }}
+          KEY_PASS: ${{ secrets.Q50_KEY_PASS }}
+        run: |
+          set -euo pipefail
+          # The secrets context is not available in a step's `if`, so the
+          # opt-in check happens here instead.
+          if [ -z "${KEYSTORE_B64:-}" ]; then
+            echo "No signing key in repository secrets;"
+            echo "build.sh will generate a throwaway key on this runner."
+            exit 0
+          fi
+          mkdir -p "${RUNNER_TEMP}/signing"
+          printf '%s' "$KEYSTORE_B64" | base64 -d > "${RUNNER_TEMP}/signing/q50gtr.keystore"
+          {
+            echo "Q50_KEYSTORE=${RUNNER_TEMP}/signing/q50gtr.keystore"
+            echo "Q50_KEY_ALIAS=${KEY_ALIAS}"
+            echo "Q50_KEY_PASS=${KEY_PASS}"
+          } >> "$GITHUB_ENV"
+          echo "Using the keystore from repository secrets."
+
+      - name: Build APK
+        run: ./build.sh
+
+      - name: Verify APK
+        run: ./verify.sh "build/Q50-GTR-Plus-v0.7.apk"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install cryptography
+        run: python3 -m pip install --disable-pip-version-check cryptography
+
+      - name: Build EPK
+        run: ./build-epk.sh
+
+      - name: Verify EPK
+        run: |
+          set -euo pipefail
+          # build-epk.sh уже проверяет контейнер; здесь проверка повторяется
+          # отдельным шагом, чтобы её провал был виден в списке шагов.
+          python3 tools/epktool.py verify "artifact/${EPK_NAME}" \
+            --expect-name q50gtr.apk \
+            --expect-type 2 \
+            --expect-blocks 1 \
+            --expect-key-size 128
+
+      - name: Build provenance
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          set -euo pipefail
+          # Записываем SHA самого тега, а не коммита сборки: расхождение между
+          # ними — это ровно то, что провенанс должен показывать.
+          TAG="${RELEASE_TAG:-}"
+          if [ -z "$TAG" ] && [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+            TAG="${GITHUB_REF_NAME}"
+          fi
+          if [ -n "$TAG" ]; then
+            PROV_TAG_SHA=$(gh api "repos/${GITHUB_REPOSITORY}/git/refs/tags/${TAG}" \
+              --jq '.object.sha' 2>/dev/null || echo "(tag ${TAG} not found)")
+            export PROV_TAG_SHA
+            echo "tag ${TAG} -> ${PROV_TAG_SHA}"
+          fi
+          ./provenance.sh
+
+      - name: Release preflight
+        if: startsWith(github.ref, 'refs/tags/v') || inputs.release_tag != ''
+        run: |
+          set -euo pipefail
+
+          MODE=$(cat artifact/signing-mode.txt)
+          echo "SIGNING_MODE=${MODE}"
+
+          # Релиз, подписанный одноразовым ключом, невозможно обновить поверх:
+          # следующая сборка даст другой сертификат и установка обновления
+          # будет отклонена. Для CI-артефакта это терпимо, для публикации нет.
+          if [ "$MODE" != "persistent" ]; then
+            echo "::error::release требует постоянного ключа подписи (SIGNING_MODE=${MODE})."
+            echo "Заведите секреты репозитория Q50_KEYSTORE_BASE64, Q50_KEY_ALIAS," >&2
+            echo "Q50_KEY_PASS — см. keys/README.md. Публикация отменена." >&2
+            exit 1
+          fi
+
+          ACTUAL=$(cat artifact/apk-signer-cert.sha256)
+          echo "Signer certificate SHA-256: ${ACTUAL}"
+
+          # Первая строка файла, которая не комментарий и не пуста.
+          EXPECTED=$(grep -vE '^[[:space:]]*(#|$)' release-signing-cert.sha256 \
+            | head -1 | tr -d '[:space:]' || true)
+
+          if [ -z "$EXPECTED" ]; then
+            echo "::error::в release-signing-cert.sha256 не задан ожидаемый сертификат."
+            echo "Запишите в него эту строку и закоммитьте:" >&2
+            echo "  ${ACTUAL}" >&2
+            exit 1
+          fi
+
+          if [ "$ACTUAL" != "$EXPECTED" ]; then
+            echo "::error::сертификат подписи не совпадает с ожидаемым."
+            echo "  ожидался: ${EXPECTED}" >&2
+            echo "  получен:  ${ACTUAL}" >&2
+            echo "Обновление поверх установленной версии не встанет. Публикация отменена." >&2
+            exit 1
+          fi
+
+          echo "Сертификат подписи совпадает с ожидаемым."
+
+      - name: APK + EPK summary
+        run: |
+          set -euo pipefail
+          BADGING="artifact/badging.txt"
+          SUM=$(cut -d' ' -f1 "artifact/${APK_NAME}.sha256")
+          EPK_SUM=$(cut -d' ' -f1 "artifact/${EPK_NAME}.sha256")
+          {
+            echo "### Q50 GTR+ v0.7 — APK для InTouch / DCU Gen1"
+            echo ""
+            echo "| | |"
+            echo "|---|---|"
+            echo "| package | \`$(grep -oP "^package: name='\K[^']+" "$BADGING")\` |"
+            echo "| versionCode | $(grep -oP "^package:.*versionCode='\K[^']+" "$BADGING") |"
+            echo "| versionName | $(grep -oP "^package:.*versionName='\K[^']+" "$BADGING") |"
+            echo "| sdkVersion | $(grep -oP "^sdkVersion:'\K[^']+" "$BADGING") |"
+            echo "| targetSdkVersion | $(grep -oP "^targetSdkVersion:'\K[^']+" "$BADGING") |"
+            echo "| application label | $(grep -oP "^application-label:'\K[^']+" "$BADGING") |"
+            echo "| APK | \`${APK_NAME}\` |"
+            echo "| размер APK | $(stat -c%s "artifact/${APK_NAME}") байт |"
+            echo "| SHA-256 APK | \`${SUM}\` |"
+            echo "| EPK | \`${EPK_NAME}\` |"
+            echo "| размер EPK | $(stat -c%s "artifact/${EPK_NAME}") байт |"
+            echo "| SHA-256 EPK | \`$(cut -d' ' -f1 "artifact/${EPK_NAME}.sha256")\` |"
+            echo "| SIGNING_MODE | \`$(cat artifact/signing-mode.txt)\` |"
+            echo "| Signer certificate DN | $(grep -m1 '^Signer #1 certificate DN:' artifact/signature.txt | sed 's/^Signer #1 certificate DN: //') |"
+            echo "| Signer certificate SHA-256 | \`$(cat artifact/apk-signer-cert.sha256)\` |"
+            echo ""
+            echo "**EPK**"
+            echo ""
+            echo '```'
+            cat artifact/epk-info.txt
+            echo '```'
+            echo ""
+            echo "**Permissions**"
+            echo ""
+            grep "^uses-permission:" "$BADGING" | sed 's/^/- `/; s/$/`/' || echo "- (нет)"
+            echo ""
+            echo "**Подпись**"
+            echo ""
+            echo '```'
+            grep -E "^Verified|^Signer #1 certificate (DN|SHA-256)" artifact/signature.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Publish release
+        if: startsWith(github.ref, 'refs/tags/v') || inputs.release_tag != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          set -euo pipefail
+          SUM=$(cut -d' ' -f1 "artifact/${APK_NAME}.sha256")
+          EPK_SUM=$(cut -d' ' -f1 "artifact/${EPK_NAME}.sha256")
+          cat > notes.md <<NOTES
+          Приборная панель Q50 GTR+ для штатного головного устройства
+          Infiniti Q50 2017 (InTouch / DCU Gen1). Экран 840x480, landscape.
+
+          Собрано под Android 2.3 (API 9), \`targetSdkVersion 10\`, цепочкой
+          aapt / javac / d8 / zipalign / apksigner — без Gradle, AndroidX и
+          сторонних библиотек. Подпись только v1 (JAR), как понимает DCU.
+
+          Для установки с USB на ГУ берите **\`${EPK_NAME}\`**: AppManager
+          не распознаёт голый APK, только контейнер .epk. Файл кладётся в
+          корень флешки FAT32 и выбирается в AppManager.
+
+          SHA-256 APK: \`${SUM}\`
+          SHA-256 EPK: \`${EPK_SUM}\`
+
+          **Прежде чем ставить, прочитайте:**
+
+          - Работа на DCU **не проверена** — APK собирается, подписывается и
+            проходит проверки, но в автомобиль не устанавливался.
+          - Данные в приборах **демонстрационные**. Каждое такое значение
+            помечено бейджем DEMO. Связи с EcuTek и AirLift ещё нет.
+          - LPFP не логируется в текущей конфигурации EcuTek и показывается
+            как «НЕТ ДАННЫХ». Turbo Speed отсутствует — он не пишется.
+          - Если ключ подписи не задан секретами репозитория, он генерируется
+            на раннере заново при каждой сборке, и новая версия не встанет
+            поверх старой — предыдущую нужно сначала удалить.
+          - Контейнер .epk сложен по подтверждённому формату и проходит строгую
+            проверку раскладки. При этом **совместимость сертификата OBU с этим
+            конкретным DCU пока не подтверждена**: .epk примет только ГУ, в
+            прошивке которого лежит парный закрытый ключ.
+          NOTES
+
+          TAG="${RELEASE_TAG:-}"
+          if [ -z "$TAG" ]; then
+            TAG="${GITHUB_REF_NAME}"
+          fi
+          ASSETS="artifact/${APK_NAME} artifact/${APK_NAME}.sha256 \
+                  artifact/${EPK_NAME} artifact/${EPK_NAME}.sha256 \
+                  artifact/signature.txt artifact/badging.txt artifact/epk-info.txt \
+                  artifact/BUILD-PROVENANCE.txt"
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            gh release upload "$TAG" $ASSETS --clobber
+            gh release edit "$TAG" --notes-file notes.md
+          else
+            gh release create "$TAG" $ASSETS \
+              --target "${GITHUB_SHA}" \
+              --title "Q50 GTR+ $TAG" \
+              --notes-file notes.md
+          fi
+          gh release view "$TAG" --json assets --jq '.assets[].name'
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Q50-GTR-Plus-v0.7-InTouch
+          path: |
+            artifact/Q50-GTR-Plus-v0.7.apk
+            artifact/Q50-GTR-Plus-v0.7.apk.sha256
+            artifact/Q50-GTR-Plus-v0.7.epk
+            artifact/Q50-GTR-Plus-v0.7.epk.sha256
+            artifact/signature.txt
+            artifact/badging.txt
+            artifact/epk-info.txt
+            artifact/BUILD-PROVENANCE.txt
+          if-no-files-found: error
+          retention-days: 90

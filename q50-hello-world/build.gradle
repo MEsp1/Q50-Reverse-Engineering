@@ -1,0 +1,7 @@
+// Top-level build file for Q50 Hello World
+// Targets Infiniti Q50 IVI (Android 2.3 / API 10 / Dalvik VM)
+
+plugins {
+    id 'com.android.application' version '8.2.2' apply false
+    id 'org.jetbrains.kotlin.android' version '1.9.22' apply false
+}

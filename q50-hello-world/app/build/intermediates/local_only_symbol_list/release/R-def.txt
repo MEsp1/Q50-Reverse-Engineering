@@ -1,0 +1,13 @@
+R_DEF: Internal format may change without notice
+local
+color accent_amber
+color accent_blue
+color accent_cyan
+color accent_green
+color accent_orange
+color accent_purple
+color accent_red
+color background
+color text_primary
+color text_secondary
+string app_name

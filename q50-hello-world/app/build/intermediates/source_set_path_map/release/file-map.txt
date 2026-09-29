@@ -1,0 +1,8 @@
+com.q50dev.hello.app-pngs-0 C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\build\generated\res\pngs\release
+com.q50dev.hello.app-resValues-1 C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\build\generated\res\resValues\release
+com.q50dev.hello.app-packageReleaseResources-2 C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\build\intermediates\incremental\release\packageReleaseResources\merged.dir
+com.q50dev.hello.app-packageReleaseResources-3 C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\build\intermediates\incremental\release\packageReleaseResources\stripped.dir
+com.q50dev.hello.app-merged-not-compiled-resources-4 C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\build\intermediates\merged-not-compiled-resources\release
+com.q50dev.hello.app-merged_res-5 C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\build\intermediates\merged_res\release
+com.q50dev.hello.app-main-6 C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\res
+com.q50dev.hello.app-release-7 C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\release\res

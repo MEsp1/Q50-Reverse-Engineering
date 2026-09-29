@@ -1,0 +1,4 @@
+#Sat Sep 19 22:13:45 CST 2026
+base.0=C\:\\dev\\q50\\Q50-Reverse-Engineering\\q50-hello-world\\app\\build\\intermediates\\dex\\release\\minifyReleaseWithR8\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex

@@ -1,0 +1,27 @@
+@color/accent_amber : reachable=false
+@color/accent_blue : reachable=false
+@color/accent_cyan : reachable=false
+@color/accent_green : reachable=false
+@color/accent_orange : reachable=false
+@color/accent_purple : reachable=false
+@color/accent_red : reachable=false
+@color/background : reachable=false
+@color/text_primary : reachable=false
+@color/text_secondary : reachable=false
+@string/app_name : reachable=false
+
+The root reachable resources are:
+
+Unused resources are: 
+ color:accent_amber:2130771968
+ color:accent_blue:2130771969
+ color:accent_cyan:2130771970
+ color:accent_green:2130771971
+ color:accent_orange:2130771972
+ color:accent_purple:2130771973
+ color:accent_red:2130771974
+ color:background:2130771975
+ color:text_primary:2130771976
+ color:text_secondary:2130771977
+ string:app_name:2130837504
+Resource shrinking did not work (grew from 1606 to 1646); using original instead

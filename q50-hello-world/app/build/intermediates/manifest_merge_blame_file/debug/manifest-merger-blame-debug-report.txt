@@ -1,0 +1,120 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<!--
+3    AndroidManifest for Q50 IVI (Bosch DCU / Android 2.3 / API 10).
+4
+5    Structure mirrors the working Red Sport reference app documented in:
+6    docs/custom-app-notes.md
+7
+8    Key constraints:
+9    - minSdkVersion / targetSdkVersion = 10 (Dalvik 2.3)
+10    - Normal MAIN/LAUNCHER activity (no sharedUserId="android.uid.system")
+11    - IVI metadata consumed by the stock HomeScreen
+12    - com.ygomi.permission.IVI_CAN_READ for vehicle sensor access
+13    - Landscape orientation, fullscreen, no title bar
+14-->
+15<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+16    package="com.q50dev.hello"
+17    android:versionCode="1"
+18    android:versionName="1.0" >
+19
+20    <uses-sdk
+20-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:20:5-22:41
+21        android:minSdkVersion="10"
+21-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:21:9-35
+22        android:targetSdkVersion="10" />
+22-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:22:9-38
+23
+24    <!-- IVI permission for CAN bus data via SensorManager -->
+25    <uses-permission android:name="com.ygomi.permission.IVI_CAN_READ" />
+25-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:25:5-73
+25-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:25:22-70
+26
+27    <application
+27-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:27:5-64:19
+28        android:allowBackup="false"
+28-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:29:9-36
+29        android:debuggable="true"
+30        android:extractNativeLibs="true"
+31        android:label="Q50 Hello" >
+31-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:28:9-34
+32
+33        <!--
+34            IVI metadata — observed in the working Red Sport app.
+35            The stock HomeScreen reads applicationInfo.metaData and
+36            checks at least ivi.isDistractive.
+37
+38            ivi.isDistractive  = false  → app is NOT distracting while driving
+39            ivi.shortcut       = true   → show shortcut in the IVI launcher
+40            ivi.audio          = false  → app does not use audio subsystem
+41            ivi.autorun        = false  → do not auto-launch on boot
+42            ivi.Disclaimer     = false  → no disclaimer dialog required
+43            ivi.supportDisplay = ALL    → runs on both upper and lower screens
+44            ivi.defaultDisplay = LOWER  → default to the lower touch panel
+45        -->
+46        <meta-data
+46-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:44:9-77
+47            android:name="ivi.isDistractive"
+47-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:44:20-52
+48            android:value="false" />
+48-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:44:53-74
+49        <meta-data
+49-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:45:9-76
+50            android:name="ivi.shortcut"
+50-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:45:20-47
+51            android:value="true" />
+51-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:45:53-73
+52        <meta-data
+52-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:46:9-78
+53            android:name="ivi.audio"
+53-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:46:20-44
+54            android:value="false" />
+54-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:46:54-75
+55        <meta-data
+55-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:47:9-78
+56            android:name="ivi.autorun"
+56-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:47:20-46
+57            android:value="false" />
+57-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:47:54-75
+58        <meta-data
+58-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:48:9-78
+59            android:name="ivi.Disclaimer"
+59-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:48:20-49
+60            android:value="false" />
+60-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:48:54-75
+61        <meta-data
+61-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:49:9-76
+62            android:name="ivi.supportDisplay"
+62-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:49:20-53
+63            android:value="ALL" />
+63-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:49:54-73
+64        <meta-data
+64-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:50:9-78
+65            android:name="ivi.defaultDisplay"
+65-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:50:20-53
+66            android:value="LOWER" />
+66-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:50:54-75
+67
+68        <activity
+68-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:52:9-62:20
+69            android:name="com.q50dev.hello.MainActivity"
+69-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:53:13-41
+70            android:label="Q50 Hello"
+70-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:54:13-38
+71            android:screenOrientation="landscape"
+71-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:55:13-50
+72            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+72-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:56:13-71
+73            <intent-filter>
+73-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:58:13-61:29
+74                <action android:name="android.intent.action.MAIN" />
+74-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:59:17-69
+74-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:59:25-66
+75
+76                <category android:name="android.intent.category.LAUNCHER" />
+76-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:60:17-77
+76-->C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:60:27-74
+77            </intent-filter>
+78        </activity>
+79    </application>
+80
+81</manifest>

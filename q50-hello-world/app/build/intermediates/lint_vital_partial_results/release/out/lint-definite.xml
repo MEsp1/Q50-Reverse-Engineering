@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<incidents format="6" by="lint 8.2.2" type="incidents">
+
+    <incident
+        id="ExpiredTargetSdkVersion"
+        severity="fatal"
+        message="Google Play requires that apps target API level 33 or higher.">
+        <fix-attribute
+            description="Update targetSdkVersion to 33"
+            namespace="http://schemas.android.com/apk/res/android"
+            attribute="targetSdkVersion"
+            value="33"/>
+        <location
+            file="${:app*release*MAIN*sourceProvider*0*manifest*0}"
+            line="22"
+            column="9"
+            startOffset="762"
+            endLine="22"
+            endColumn="38"
+            endOffset="791"/>
+    </incident>
+
+    <incident
+        id="ExpiredTargetSdkVersion"
+        severity="fatal"
+        message="Google Play requires that apps target API level 33 or higher.">
+        <location
+            file="${:app*projectDir}/build.gradle"
+            line="18"
+            column="9"
+            startOffset="401"
+            endLine="18"
+            endColumn="21"
+            endOffset="413"/>
+    </incident>
+
+</incidents>

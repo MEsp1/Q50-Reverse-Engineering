@@ -1,0 +1,317 @@
+# compiler: R8
+# compiler_version: 8.2.47
+# min_api: 10
+# common_typos_disable
+# {"id":"com.android.tools.r8.mapping","version":"2.2"}
+# pg_map_id: 4e3f7cc
+# pg_map_hash: SHA-256 4e3f7ccf706c3471d2e99d95936c472404350bbb3402dfaed7855fdce8c96831
+com.q50dev.hello.DashboardView -> a.b:
+# {"id":"sourceFile","fileName":"DashboardView.kt"}
+    android.graphics.Paint arcTrackPaint -> A
+    android.graphics.Paint arcActivePaint -> B
+    android.graphics.Paint arcRedlinePaint -> C
+    android.graphics.Paint radarRingPaint -> D
+    android.graphics.Paint radarCrossPaint -> E
+    android.graphics.Paint carOutlinePaint -> F
+    android.graphics.Paint carFillPaint -> G
+    android.graphics.RectF rectScratch -> H
+    android.graphics.Path pathScratch -> I
+    android.graphics.RectF[] tabRects -> J
+    int activeTab -> a
+    com.q50dev.hello.VehicleData data -> b
+    boolean isLiveMode -> c
+    float demoTimer -> d
+    android.os.Handler refreshHandler -> e
+    com.q50dev.hello.DashboardView$frameRunnable$1 frameRunnable -> f
+      # {"id":"com.android.tools.r8.residualsignature","signature":"La/a;"}
+    android.graphics.Paint bgPaint -> g
+    android.graphics.Paint panelPaint -> h
+    android.graphics.Paint panelBorderPaint -> i
+    android.graphics.Paint tabActivePaint -> j
+    android.graphics.Paint tabBorderActivePaint -> k
+    android.graphics.Paint redAccentPaint -> l
+    android.graphics.Paint cyanAccentPaint -> m
+    android.graphics.Paint greenAccentPaint -> n
+    android.graphics.Paint amberAccentPaint -> o
+    android.graphics.Paint textHeaderTitle -> p
+    android.graphics.Paint textHeaderTab -> q
+    android.graphics.Paint textHeaderTabActive -> r
+    android.graphics.Paint textLabel -> s
+    android.graphics.Paint textValueHuge -> t
+    android.graphics.Paint textValueLarge -> u
+    android.graphics.Paint textValueMed -> v
+    android.graphics.Paint textUnit -> w
+    android.graphics.Paint textGearHuge -> x
+    android.graphics.Paint textSpeedHuge -> y
+    android.graphics.Paint textDragTimer -> z
+    1:1:void <init>(android.content.Context):0:0 -> <init>
+    1:1:void drawTile(android.graphics.Canvas,float,float,float,float,java.lang.String,java.lang.String,java.lang.String,float,float,float):0:0 -> a
+      # {"id":"com.android.tools.r8.residualsignature","signature":"(Landroid/graphics/Canvas;FFLjava/lang/String;Ljava/lang/String;Ljava/lang/String;FFF)V"}
+    1:1:void drawTireCard(android.graphics.Canvas,float,float,float,float,java.lang.String,float,float):0:0 -> b
+      # {"id":"com.android.tools.r8.residualsignature","signature":"(Landroid/graphics/Canvas;FFLjava/lang/String;FF)V"}
+    1:1:int getActiveTab():0:0 -> getActiveTab
+    1:1:com.q50dev.hello.VehicleData getData():0:0 -> getData
+    1:1:float getDemoTimer():0:0 -> getDemoTimer
+    1:1:void com.q50dev.hello.DashboardView.drawHeader(android.graphics.Canvas,float):0:0 -> onDraw
+    1:1:void onDraw(android.graphics.Canvas):0 -> onDraw
+    2:2:void com.q50dev.hello.DashboardView.drawDragTab(android.graphics.Canvas,float,float):0:0 -> onDraw
+    2:2:void onDraw(android.graphics.Canvas):0 -> onDraw
+    3:3:void com.q50dev.hello.DashboardView.drawHybridTab(android.graphics.Canvas,float,float):0:0 -> onDraw
+    3:3:void onDraw(android.graphics.Canvas):0 -> onDraw
+    4:4:void com.q50dev.hello.DashboardView.drawTiresTab(android.graphics.Canvas,float,float):0:0 -> onDraw
+    4:4:void onDraw(android.graphics.Canvas):0 -> onDraw
+    5:5:void com.q50dev.hello.DashboardView.drawCarSilhouette(android.graphics.Canvas,float,float):0:0 -> onDraw
+    5:5:void com.q50dev.hello.DashboardView.drawTiresTab(android.graphics.Canvas,float,float):0 -> onDraw
+    5:5:void onDraw(android.graphics.Canvas):0 -> onDraw
+    6:6:void com.q50dev.hello.DashboardView.drawTiresTab(android.graphics.Canvas,float,float):0:0 -> onDraw
+    6:6:void onDraw(android.graphics.Canvas):0 -> onDraw
+    7:7:void com.q50dev.hello.DashboardView.drawMotorTab(android.graphics.Canvas,float,float):0:0 -> onDraw
+    7:7:void onDraw(android.graphics.Canvas):0 -> onDraw
+    1:1:boolean onTouchEvent(android.view.MotionEvent):0:0 -> onTouchEvent
+    1:1:void setActiveTab(int):0:0 -> setActiveTab
+    1:1:void setData(com.q50dev.hello.VehicleData):0:0 -> setData
+    1:1:void setDemoTimer(float):0:0 -> setDemoTimer
+    1:1:void setLiveMode(boolean):0:0 -> setLiveMode
+com.q50dev.hello.DashboardView$frameRunnable$1 -> a.a:
+# {"id":"sourceFile","fileName":"DashboardView.kt"}
+    com.q50dev.hello.DashboardView this$0 -> a
+      # {"id":"com.android.tools.r8.residualsignature","signature":"La/b;"}
+    1:1:void <init>(com.q50dev.hello.DashboardView):0:0 -> <init>
+      # {"id":"com.android.tools.r8.residualsignature","signature":"(La/b;)V"}
+    1:1:boolean com.q50dev.hello.DashboardView.isLiveMode():0:0 -> run
+    1:1:void run():0 -> run
+      # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
+    2:2:void com.q50dev.hello.DashboardView.updateDemoSimulation():0:0 -> run
+    2:2:void com.q50dev.hello.DashboardView.access$updateDemoSimulation(com.q50dev.hello.DashboardView):0 -> run
+      # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
+    2:2:void run():0 -> run
+    3:4:void com.q50dev.hello.DashboardView.updateDemoSimulation():0:0 -> run
+    3:4:void com.q50dev.hello.DashboardView.access$updateDemoSimulation(com.q50dev.hello.DashboardView):0 -> run
+    3:4:void run():0 -> run
+    5:5:void run():0:0 -> run
+    6:6:android.os.Handler com.q50dev.hello.DashboardView.access$getRefreshHandler$p(com.q50dev.hello.DashboardView):0:0 -> run
+    6:6:void run():0 -> run
+    7:7:void run():0:0 -> run
+com.q50dev.hello.MainActivity -> com.q50dev.hello.MainActivity:
+# {"id":"sourceFile","fileName":"MainActivity.kt"}
+    com.q50dev.hello.Q50SensorManager sensorMgr -> a
+    com.q50dev.hello.DashboardView dashboardView -> b
+      # {"id":"com.android.tools.r8.residualsignature","signature":"La/b;"}
+    9:19:void com.q50dev.hello.Q50SensorManager.stop():0:0 -> onPause
+    9:19:void onPause():0 -> onPause
+    20:21:void com.q50dev.hello.DashboardView.stop():0:0 -> onPause
+    20:21:void onPause():0 -> onPause
+      # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
+    22:29:void com.q50dev.hello.DashboardView.stop():0:0 -> onPause
+    22:29:void onPause():0 -> onPause
+    30:39:void onPause():0:0 -> onPause
+    1:1:void com.q50dev.hello.DashboardView.start():0:0 -> onResume
+    1:1:void onResume():0 -> onResume
+      # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
+    2:2:void com.q50dev.hello.DashboardView.start():0:0 -> onResume
+    2:2:void onResume():0 -> onResume
+    3:3:void com.q50dev.hello.Q50SensorManager.start():0:0 -> onResume
+    3:3:void onResume():0 -> onResume
+    4:4:boolean com.q50dev.hello.Q50SensorManager.isVehicleSensor(android.hardware.Sensor):0:0 -> onResume
+    4:4:void com.q50dev.hello.Q50SensorManager.start():0 -> onResume
+    4:4:void onResume():0 -> onResume
+    5:5:int kotlin.ranges.IntProgression.getFirst():0:0 -> onResume
+    5:5:boolean com.q50dev.hello.Q50SensorManager.isVehicleSensor(android.hardware.Sensor):0 -> onResume
+      # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
+    5:5:void com.q50dev.hello.Q50SensorManager.start():0 -> onResume
+    5:5:void onResume():0 -> onResume
+    6:6:boolean com.q50dev.hello.Q50SensorManager.isVehicleSensor(android.hardware.Sensor):0:0 -> onResume
+    6:6:void com.q50dev.hello.Q50SensorManager.start():0 -> onResume
+    6:6:void onResume():0 -> onResume
+    7:7:void com.q50dev.hello.Q50SensorManager.start():0:0 -> onResume
+    7:7:void onResume():0 -> onResume
+    8:8:void kotlin.jvm.internal.Intrinsics.throwJavaNpe():0:0 -> onResume
+    8:8:void kotlin.jvm.internal.Intrinsics.checkNotNull(java.lang.Object):0 -> onResume
+    8:8:void com.q50dev.hello.Q50SensorManager.start():0 -> onResume
+    8:8:void onResume():0 -> onResume
+    9:9:void onResume():0:0 -> onResume
+com.q50dev.hello.MainActivity$onCreate$1 -> a.c:
+# {"id":"sourceFile","fileName":"MainActivity.kt"}
+    com.q50dev.hello.MainActivity this$0 -> a
+    1:1:void kotlin.jvm.internal.Lambda.<init>(int):0:0 -> <init>
+    1:1:void <init>(com.q50dev.hello.MainActivity):0 -> <init>
+    1:7:java.lang.String kotlin.jvm.internal.Reflection.renderLambdaToString(kotlin.jvm.internal.Lambda):0:0 -> a
+    1:7:java.lang.String kotlin.jvm.internal.Lambda.toString():0 -> a
+    8:34:java.lang.String kotlin.jvm.internal.ReflectionFactory.renderLambdaToString(kotlin.jvm.internal.FunctionBase):0:0 -> a
+    8:34:java.lang.String kotlin.jvm.internal.ReflectionFactory.renderLambdaToString(kotlin.jvm.internal.Lambda):0 -> a
+    8:34:java.lang.String kotlin.jvm.internal.Reflection.renderLambdaToString(kotlin.jvm.internal.Lambda):0 -> a
+    8:34:java.lang.String kotlin.jvm.internal.Lambda.toString():0 -> a
+    35:38:java.lang.String kotlin.jvm.internal.Lambda.toString():0:0 -> a
+    1:5:java.lang.String toString():0:0 -> toString
+      # {"id":"com.android.tools.r8.synthesized"}
+com.q50dev.hello.Q50SensorManager -> com.q50dev.hello.Q50SensorManager:
+# {"id":"sourceFile","fileName":"Q50SensorManager.kt"}
+    android.hardware.SensorManager sm -> a
+    com.q50dev.hello.VehicleData data -> b
+    kotlin.jvm.functions.Function1 onDataChanged -> c
+      # {"id":"com.android.tools.r8.residualsignature","signature":"La/c;"}
+    java.util.List detectedSensors -> d
+      # {"id":"com.android.tools.r8.residualsignature","signature":"Ljava/util/ArrayList;"}
+    1:1:int kotlin.collections.ArraysKt___ArraysKt.getLastIndex(float[]):0:0 -> onSensorChanged
+    1:1:java.lang.Float kotlin.collections.ArraysKt___ArraysKt.getOrNull(float[],int):0 -> onSensorChanged
+    1:1:void onSensorChanged(android.hardware.SensorEvent):0 -> onSensorChanged
+    2:2:java.lang.Float kotlin.collections.ArraysKt___ArraysKt.getOrNull(float[],int):0:0 -> onSensorChanged
+    2:2:void onSensorChanged(android.hardware.SensorEvent):0 -> onSensorChanged
+    3:3:void onSensorChanged(android.hardware.SensorEvent):0:0 -> onSensorChanged
+    4:4:void com.q50dev.hello.MainActivity$onCreate$1.invoke(com.q50dev.hello.VehicleData):0:0 -> onSensorChanged
+    4:4:java.lang.Object com.q50dev.hello.MainActivity$onCreate$1.invoke(java.lang.Object):0 -> onSensorChanged
+    4:4:void onSensorChanged(android.hardware.SensorEvent):0 -> onSensorChanged
+    5:5:com.q50dev.hello.DashboardView com.q50dev.hello.MainActivity.access$getDashboardView$p(com.q50dev.hello.MainActivity):0:0 -> onSensorChanged
+    5:5:void com.q50dev.hello.MainActivity$onCreate$1.invoke(com.q50dev.hello.VehicleData):0 -> onSensorChanged
+    5:5:java.lang.Object com.q50dev.hello.MainActivity$onCreate$1.invoke(java.lang.Object):0 -> onSensorChanged
+    5:5:void onSensorChanged(android.hardware.SensorEvent):0 -> onSensorChanged
+    6:6:void com.q50dev.hello.MainActivity$onCreate$1.invoke(com.q50dev.hello.VehicleData):0:0 -> onSensorChanged
+    6:6:java.lang.Object com.q50dev.hello.MainActivity$onCreate$1.invoke(java.lang.Object):0 -> onSensorChanged
+    6:6:void onSensorChanged(android.hardware.SensorEvent):0 -> onSensorChanged
+    7:7:com.q50dev.hello.DashboardView com.q50dev.hello.MainActivity.access$getDashboardView$p(com.q50dev.hello.MainActivity):0:0 -> onSensorChanged
+    7:7:void com.q50dev.hello.MainActivity$onCreate$1.invoke(com.q50dev.hello.VehicleData):0 -> onSensorChanged
+    7:7:java.lang.Object com.q50dev.hello.MainActivity$onCreate$1.invoke(java.lang.Object):0 -> onSensorChanged
+    7:7:void onSensorChanged(android.hardware.SensorEvent):0 -> onSensorChanged
+    8:8:void com.q50dev.hello.MainActivity$onCreate$1.invoke(com.q50dev.hello.VehicleData):0:0 -> onSensorChanged
+    8:8:java.lang.Object com.q50dev.hello.MainActivity$onCreate$1.invoke(java.lang.Object):0 -> onSensorChanged
+    8:8:void onSensorChanged(android.hardware.SensorEvent):0 -> onSensorChanged
+com.q50dev.hello.Q50Sensors -> com.q50dev.hello.Q50Sensors:
+# {"id":"sourceFile","fileName":"VehicleData.kt"}
+    kotlin.ranges.IntRange VEHICLE_RANGE -> VEHICLE_RANGE
+      # {"id":"com.android.tools.r8.residualsignature","signature":"Le/c;"}
+    1:1:kotlin.ranges.IntRange getVEHICLE_RANGE():0:0 -> getVEHICLE_RANGE
+      # {"id":"com.android.tools.r8.residualsignature","signature":"()Le/c;"}
+com.q50dev.hello.VehicleData -> com.q50dev.hello.VehicleData:
+# {"id":"sourceFile","fileName":"VehicleData.kt"}
+    1:1:void <init>():0:0 -> <init>
+    2:2:void <init>(float,float,float,float,float,float,float,float,float,int,float,float,float,float,float,float,float,float,float,float,float,int,float,float,float,float):0:0 -> <init>
+    3:3:void <init>(float,float,float,float,float,float,float,float,float,int,float,float,float,float,float,float,float,float,float,float,float,int,float,float,float,float,int,kotlin.jvm.internal.DefaultConstructorMarker):0:0 -> <init>
+      # {"id":"com.android.tools.r8.residualsignature","signature":"(FFFFFFFFFIFFFFFFFFFFFIFFFFILd/a;)V"}
+    1:1:int hashCode():0:0 -> hashCode
+      # {"id":"com.android.tools.r8.outlineCallsite","positions":{"1":3},"outline":"La/d;a(FII)I"}
+    2:2:int hashCode():0:0 -> hashCode
+    3:3:int hashCode():0:0 -> hashCode
+com.q50dev.hello.VehicleData$$ExternalSyntheticOutline0 -> a.d:
+# {"id":"sourceFile","fileName":"R8$$SyntheticClass"}
+# {"id":"com.android.tools.r8.synthesized"}
+    1:1:int com.q50dev.hello.VehicleData$$InternalSyntheticOutline$20$dfb7b411b83d331976f6955c5202801f785ae6369b205e9e910601ad2852ccc7$0.m(float,int,int):0:0 -> a
+      # {"id":"com.android.tools.r8.synthesized"}
+      # {"id":"com.android.tools.r8.outline"}
+kotlin.Metadata -> kotlin.Metadata:
+# {"id":"sourceFile","fileName":"Metadata.kt"}
+kotlin.Pair -> b.a:
+# {"id":"sourceFile","fileName":"Tuples.kt"}
+    java.lang.Object first -> a
+    java.lang.Object second -> b
+    1:1:void <init>(java.lang.Object,java.lang.Object):0:0 -> <init>
+      # {"id":"com.android.tools.r8.residualsignature","signature":"(Ljava/lang/String;Ljava/lang/Integer;)V"}
+    1:1:boolean kotlin.jvm.internal.Intrinsics.areEqual(java.lang.Object,java.lang.Object):0:0 -> equals
+    1:1:boolean equals(java.lang.Object):0 -> equals
+    1:1:int hashCode():0:0 -> hashCode
+    1:1:java.lang.String toString():0:0 -> toString
+kotlin.UninitializedPropertyAccessException -> b.b:
+# {"id":"sourceFile","fileName":"UninitializedPropertyAccessException.kt"}
+    1:1:void <init>(java.lang.String):0:0 -> <init>
+kotlin.collections.ArraysKt__ArraysKt -> c.a:
+# {"id":"sourceFile","fileName":"Arrays.kt"}
+    1:1:void kotlin.jvm.internal.Intrinsics.checkNotNullExpressionValue(java.lang.Object,java.lang.String):0:0 -> a
+      # {"id":"com.android.tools.r8.residualsignature","signature":"(Ljava/lang/String;Ljava/lang/String;)V"}
+    1:1:void kotlin.jvm.internal.Intrinsics.throwParameterIsNullNPE(java.lang.String):0:0 -> b
+    1:1:void kotlin.jvm.internal.Intrinsics.checkNotNullParameter(java.lang.Object,java.lang.String):0 -> b
+    2:2:java.lang.String kotlin.jvm.internal.Intrinsics.createParameterIsNullExceptionMessage(java.lang.String):0:0 -> b
+    2:2:void kotlin.jvm.internal.Intrinsics.throwParameterIsNullNPE(java.lang.String):0 -> b
+    2:2:void kotlin.jvm.internal.Intrinsics.checkNotNullParameter(java.lang.Object,java.lang.String):0 -> b
+    3:3:void kotlin.jvm.internal.Intrinsics.throwParameterIsNullNPE(java.lang.String):0:0 -> b
+    3:3:void kotlin.jvm.internal.Intrinsics.checkNotNullParameter(java.lang.Object,java.lang.String):0 -> b
+    1:1:float kotlin.ranges.RangesKt___RangesKt.coerceIn(float,float,float):0:0 -> c
+    1:1:java.lang.Throwable kotlin.jvm.internal.Intrinsics.sanitizeStackTrace(java.lang.Throwable,java.lang.String):0:0 -> d
+    1:1:java.lang.Throwable kotlin.jvm.internal.Intrinsics.sanitizeStackTrace(java.lang.Throwable):0 -> d
+      # {"id":"com.android.tools.r8.residualsignature","signature":"(Ljava/lang/RuntimeException;)V"}
+    1:1:void kotlin.jvm.internal.Intrinsics.throwUninitializedProperty(java.lang.String):0:0 -> e
+    1:1:void kotlin.jvm.internal.Intrinsics.throwUninitializedPropertyAccessException(java.lang.String):0 -> e
+kotlin.collections.ArraysKt___ArraysKt -> R8$$REMOVED$$CLASS$$0:
+# {"id":"sourceFile","fileName":"_Arrays.kt"}
+kotlin.collections.IntIterator -> R8$$REMOVED$$CLASS$$1:
+# {"id":"sourceFile","fileName":"PrimitiveIterators.kt"}
+kotlin.internal.ProgressionUtilKt -> R8$$REMOVED$$CLASS$$2:
+# {"id":"sourceFile","fileName":"progressionUtil.kt"}
+kotlin.jvm.internal.DefaultConstructorMarker -> d.a:
+# {"id":"sourceFile","fileName":"DefaultConstructorMarker.java"}
+kotlin.jvm.internal.Intrinsics -> R8$$REMOVED$$CLASS$$3:
+# {"id":"sourceFile","fileName":"Intrinsics.java"}
+kotlin.jvm.internal.Lambda -> R8$$REMOVED$$CLASS$$4:
+# {"id":"sourceFile","fileName":"Lambda.kt"}
+kotlin.jvm.internal.Reflection -> d.b:
+# {"id":"sourceFile","fileName":"Reflection.java"}
+    kotlin.jvm.internal.ReflectionFactory factory -> a
+      # {"id":"com.android.tools.r8.residualsignature","signature":"Ld/c;"}
+    1:1:void <clinit>():0:0 -> <clinit>
+kotlin.jvm.internal.ReflectionFactory -> d.c:
+# {"id":"sourceFile","fileName":"ReflectionFactory.java"}
+    void <init>() -> <init>
+kotlin.ranges.IntProgression -> e.a:
+# {"id":"sourceFile","fileName":"Progressions.kt"}
+    int first -> a
+    int last -> b
+    int step -> c
+    1:1:int kotlin.internal.ProgressionUtilKt.mod(int,int):0:0 -> <init>
+    1:1:int kotlin.internal.ProgressionUtilKt.differenceModulo(int,int,int):0 -> <init>
+    1:1:int kotlin.internal.ProgressionUtilKt.getProgressionLastElement(int,int,int):0 -> <init>
+    1:1:void <init>(int,int,int):0 -> <init>
+    2:2:int kotlin.internal.ProgressionUtilKt.getProgressionLastElement(int,int,int):0:0 -> <init>
+    2:2:void <init>(int,int,int):0 -> <init>
+    3:3:void <init>(int,int,int):0:0 -> <init>
+    1:12:kotlin.collections.IntIterator kotlin.ranges.IntProgression.iterator():0:0 -> iterator
+    1:12:java.util.Iterator iterator():0 -> iterator
+kotlin.ranges.IntProgressionIterator -> e.b:
+# {"id":"sourceFile","fileName":"ProgressionIterators.kt"}
+    int step -> a
+    int finalElement -> b
+    boolean hasNext -> c
+    int next -> d
+    1:1:void kotlin.collections.IntIterator.<init>():0:0 -> <init>
+    1:1:void <init>(int,int,int):0 -> <init>
+    15:25:int kotlin.ranges.IntProgressionIterator.nextInt():0:0 -> a
+    15:25:java.lang.Object kotlin.collections.IntIterator.next():0 -> a
+    26:30:java.lang.Object kotlin.collections.IntIterator.next():0:0 -> a
+    1:1:void kotlin.collections.IntIterator.remove():0:0 -> b
+    1:1:boolean hasNext():0:0 -> hasNext
+    1:5:java.lang.Object next():0:0 -> next
+      # {"id":"com.android.tools.r8.synthesized"}
+    1:5:void remove():0:0 -> remove
+      # {"id":"com.android.tools.r8.synthesized"}
+kotlin.ranges.IntRange -> e.c:
+# {"id":"sourceFile","fileName":"PrimitiveRanges.kt"}
+    1:1:void <clinit>():0:0 -> <clinit>
+    1:1:void <init>(int,int):0:0 -> <init>
+    1:1:boolean isEmpty():0:0 -> a
+    1:1:int kotlin.ranges.IntProgression.getFirst():0:0 -> equals
+    1:1:boolean equals(java.lang.Object):0 -> equals
+      # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
+    2:2:int kotlin.ranges.IntProgression.getLast():0:0 -> equals
+    2:2:boolean equals(java.lang.Object):0 -> equals
+      # {"id":"com.android.tools.r8.rewriteFrame","conditions":["throws(Ljava/lang/NullPointerException;)"],"actions":["removeInnerFrames(1)"]}
+    1:1:int hashCode():0:0 -> hashCode
+    1:1:java.lang.String toString():0:0 -> toString
+kotlin.ranges.RangesKt___RangesKt -> R8$$REMOVED$$CLASS$$5:
+# {"id":"sourceFile","fileName":"_Ranges.kt"}
+kotlin.text.StringsKt__RegexExtensionsKt -> f.a:
+# {"id":"sourceFile","fileName":"RegexExtensions.kt"}
+kotlin.text.StringsKt__StringBuilderKt -> f.b:
+# {"id":"sourceFile","fileName":"StringBuilder.kt"}
+kotlin.text.StringsKt__StringNumberConversionsKt -> f.c:
+# {"id":"sourceFile","fileName":"StringNumberConversions.kt"}
+kotlin.text.StringsKt__StringsJVMKt -> R8$$REMOVED$$CLASS$$6:
+# {"id":"sourceFile","fileName":"StringsJVM.kt"}
+kotlin.text.StringsKt__StringsKt -> f.d:
+# {"id":"sourceFile","fileName":"Strings.kt"}
+    1:1:int kotlin.text.StringsKt__StringsKt.indexOf(java.lang.CharSequence,java.lang.String,int,boolean):0:0 -> f
+    1:1:int kotlin.text.StringsKt__StringsKt.indexOf$default(java.lang.CharSequence,java.lang.String,int,boolean,int,java.lang.Object):0 -> f
+    1:1:boolean contains(java.lang.CharSequence,java.lang.CharSequence,boolean):0 -> f
+      # {"id":"com.android.tools.r8.residualsignature","signature":"(Ljava/lang/String;Ljava/lang/String;)Z"}
+    1:2:int kotlin.text.StringsKt__StringsKt.indexOf$StringsKt__StringsKt(java.lang.CharSequence,java.lang.CharSequence,int,int,boolean,boolean):0:0 -> g
+    1:2:int indexOf$StringsKt__StringsKt$default(java.lang.CharSequence,java.lang.CharSequence,int,int,boolean,boolean,int,java.lang.Object):0 -> g
+      # {"id":"com.android.tools.r8.residualsignature","signature":"(Ljava/lang/String;Ljava/lang/String;IIZ)I"}
+    3:3:boolean kotlin.text.StringsKt__StringsJVMKt.regionMatches(java.lang.String,int,java.lang.String,int,int,boolean):0:0 -> g
+    3:3:int kotlin.text.StringsKt__StringsKt.indexOf$StringsKt__StringsKt(java.lang.CharSequence,java.lang.CharSequence,int,int,boolean,boolean):0 -> g
+    3:3:int indexOf$StringsKt__StringsKt$default(java.lang.CharSequence,java.lang.CharSequence,int,int,boolean,boolean,int,java.lang.Object):0 -> g

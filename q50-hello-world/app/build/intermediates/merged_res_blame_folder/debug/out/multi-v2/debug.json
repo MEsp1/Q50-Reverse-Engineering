@@ -1,0 +1,43 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.q50dev.hello.app-merged_res-4:/values_values.arsc.flat",
+            "map": [
+                {
+                    "source": "C:\\dev\\q50\\Q50-Reverse-Engineering\\q50-hello-world\\app\\src\\main\\res\\values\\colors.xml",
+                    "from": {
+                        "startLines": "7,5,10,6,11,9,8,2,3,4",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "299,202,445,250,493,395,348,55,102,151",
+                        "endColumns": "48,47,47,48,49,49,46,46,48,50",
+                        "endOffsets": "343,245,488,294,538,440,390,97,146,197"
+                    },
+                    "to": {
+                        "startLines": "2,3,4,5,6,7,8,9,10,11",
+                        "startColumns": "4,4,4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,104,152,200,249,299,349,396,443,492",
+                        "endColumns": "48,47,47,48,49,49,46,46,48,50",
+                        "endOffsets": "99,147,195,244,294,344,391,438,487,538"
+                    }
+                },
+                {
+                    "source": "C:\\dev\\q50\\Q50-Reverse-Engineering\\q50-hello-world\\app\\src\\main\\res\\values\\strings.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "46",
+                        "endOffsets": "97"
+                    },
+                    "to": {
+                        "startLines": "12",
+                        "startColumns": "4",
+                        "startOffsets": "543",
+                        "endColumns": "46",
+                        "endOffsets": "585"
+                    }
+                }
+            ]
+        }
+    ]
+}

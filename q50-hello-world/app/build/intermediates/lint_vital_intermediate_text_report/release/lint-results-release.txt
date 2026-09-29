@@ -1,0 +1,22 @@
+C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:22: Error: Google Play requires that apps target API level 33 or higher. [ExpiredTargetSdkVersion]
+        android:targetSdkVersion="10" />
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\build.gradle:18: Error: Google Play requires that apps target API level 33 or higher. [ExpiredTargetSdkVersion]
+        targetSdk 10
+        ~~~~~~~~~~~~
+
+   Explanation for issues of type "ExpiredTargetSdkVersion":
+   Configuring your app to target a recent API level ensures that users
+   benefit from significant security and performance improvements, while still
+   allowing your app to run on older Android versions (down to the
+   minSdkVersion).
+
+   To update your targetSdkVersion, follow the steps from "Meeting Google Play
+   requirements for target API level",
+   https://developer.android.com/distribute/best-practices/develop/target-sdk.
+   html
+
+   https://support.google.com/googleplay/android-developer/answer/113469#targetsdk
+   https://developer.android.com/distribute/best-practices/develop/target-sdk.html
+
+2 errors, 0 warnings

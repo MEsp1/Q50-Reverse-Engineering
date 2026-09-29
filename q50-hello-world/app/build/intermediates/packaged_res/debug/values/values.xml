@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="accent_amber">#FFFFC107</color>
+    <color name="accent_blue">#FF4FC3F7</color>
+    <color name="accent_cyan">#FF26C6DA</color>
+    <color name="accent_green">#FF66BB6A</color>
+    <color name="accent_orange">#FFFF7043</color>
+    <color name="accent_purple">#FFAB47BC</color>
+    <color name="accent_red">#FFEF5350</color>
+    <color name="background">#FF000000</color>
+    <color name="text_primary">#FFFFFFFF</color>
+    <color name="text_secondary">#FF9E9E9E</color>
+    <string name="app_name">Q50 Hello</string>
+</resources>

@@ -1,0 +1,11 @@
+com.q50dev.hello:color/text_secondary = 0x7f010009
+com.q50dev.hello:color/background = 0x7f010007
+com.q50dev.hello:color/accent_purple = 0x7f010005
+com.q50dev.hello:color/text_primary = 0x7f010008
+com.q50dev.hello:color/accent_cyan = 0x7f010002
+com.q50dev.hello:color/accent_orange = 0x7f010004
+com.q50dev.hello:string/app_name = 0x7f020000
+com.q50dev.hello:color/accent_red = 0x7f010006
+com.q50dev.hello:color/accent_green = 0x7f010003
+com.q50dev.hello:color/accent_blue = 0x7f010001
+com.q50dev.hello:color/accent_amber = 0x7f010000

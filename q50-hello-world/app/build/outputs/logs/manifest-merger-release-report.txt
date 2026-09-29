@@ -1,0 +1,102 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:15:1-66:12
+INJECTED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:15:1-66:12
+INJECTED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:15:1-66:12
+INJECTED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:15:1-66:12
+	package
+		ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:16:5-31
+		INJECTED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml
+	android:versionName
+		ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:18:5-30
+		INJECTED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:15:11-69
+	android:versionCode
+		ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:17:5-28
+		INJECTED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml
+uses-sdk
+ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:20:5-22:41
+INJECTED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:20:5-22:41
+INJECTED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:20:5-22:41
+	android:targetSdkVersion
+		ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:22:9-38
+		INJECTED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:21:9-35
+		INJECTED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml
+uses-permission#com.ygomi.permission.IVI_CAN_READ
+ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:25:5-73
+	android:name
+		ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:25:22-70
+application
+ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:27:5-64:19
+INJECTED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:27:5-64:19
+	android:extractNativeLibs
+		INJECTED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml
+	android:label
+		ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:28:9-34
+	android:allowBackup
+		ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:29:9-36
+meta-data#ivi.isDistractive
+ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:44:9-77
+	android:value
+		ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:44:53-74
+	android:name
+		ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:44:20-52
+meta-data#ivi.shortcut
+ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:45:9-76
+	android:value
+		ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:45:53-73
+	android:name
+		ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:45:20-47
+meta-data#ivi.audio
+ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:46:9-78
+	android:value
+		ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:46:54-75
+	android:name
+		ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:46:20-44
+meta-data#ivi.autorun
+ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:47:9-78
+	android:value
+		ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:47:54-75
+	android:name
+		ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:47:20-46
+meta-data#ivi.Disclaimer
+ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:48:9-78
+	android:value
+		ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:48:54-75
+	android:name
+		ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:48:20-49
+meta-data#ivi.supportDisplay
+ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:49:9-76
+	android:value
+		ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:49:54-73
+	android:name
+		ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:49:20-53
+meta-data#ivi.defaultDisplay
+ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:50:9-78
+	android:value
+		ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:50:54-75
+	android:name
+		ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:50:20-53
+activity#com.q50dev.hello.MainActivity
+ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:52:9-62:20
+	android:screenOrientation
+		ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:55:13-50
+	android:label
+		ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:54:13-38
+	android:theme
+		ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:56:13-71
+	android:name
+		ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:53:13-41
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:58:13-61:29
+action#android.intent.action.MAIN
+ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:59:17-69
+	android:name
+		ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:59:25-66
+category#android.intent.category.LAUNCHER
+ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:60:17-77
+	android:name
+		ADDED from C:\dev\q50\Q50-Reverse-Engineering\q50-hello-world\app\src\main\AndroidManifest.xml:60:27-74

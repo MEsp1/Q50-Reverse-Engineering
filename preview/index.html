@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Infiniti Q50s HEV // GT-R Multi-Function Telemetry & Audio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-cockpit: #06080D;
+      --bezel-color: #121620;
+      --bezel-border: #232938;
+      --screen-bg: #04070C;
+      --nismo-red: #D43A32;
+      --gtr-blue: #2E7BD6;
+      --dial-in: #16233A;
+      --dial-out: #05080E;
+      --bezel-hi: #B9C2CE;
+      --bezel-mid: #3C444F;
+      --tile-top: #121A26;
+      --tile-bottom: #0A0F17;
+      --tile-edge: #1E2A3A;
+      --text-label: #8A94A4;
+      --text-white: #F2F5FA;
+      --warn-amber: #E8A33A;
+      --hybrid-green: #00E676;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background: radial-gradient(circle at center, #101726 0%, #04060A 100%);
+      color: #ECEFF1;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    .top-header {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .top-header h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: #FFF;
+      text-shadow: 0 0 25px rgba(46, 123, 214, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .nismo-badge {
+      background: var(--nismo-red);
+      color: #FFF;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 3px;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+
+    .top-header p {
+      color: var(--text-label);
+      font-size: 13px;
+      margin-top: 5px;
+    }
+
+    /* Cockpit Bezel Mockup (Infiniti InTouch Lower Console) */
+    .cockpit-bezel {
+      background: linear-gradient(180deg, #181E2A 0%, #0C1017 100%);
+      border: 3px solid var(--bezel-border);
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.95), inset 0 2px 4px rgba(255, 255, 255, 0.08);
+      position: relative;
+      max-width: 880px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .bezel-top-trim {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      margin-bottom: 14px;
+    }
+
+    .infiniti-logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 12px;
+      letter-spacing: 3px;
+      color: #90A4AE;
+      font-weight: 700;
+    }
+
+    .screen-status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--text-label);
+    }
+
+    .led-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--hybrid-green);
+      box-shadow: 0 0 8px var(--hybrid-green);
+    }
+
+    /* 800x480 Exact Viewport */
+    .screen-container {
+      width: 800px;
+      height: 480px;
+      background: var(--screen-bg);
+      border-radius: 6px;
+      overflow: hidden;
+      border: 2px solid #1E2A3A;
+      box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.9);
+      position: relative;
+    }
+
+    canvas {
+      width: 800px;
+      height: 480px;
+      display: block;
+      cursor: pointer;
+    }
+
+    /* Interactive Cockpit Controls */
+    .cockpit-controls {
+      margin-top: 20px;
+      width: 100%;
+      max-width: 800px;
+      background: rgba(18, 26, 38, 0.9);
+      border: 1px solid var(--tile-edge);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      backdrop-filter: blur(10px);
+    }
+
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .control-label {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--text-label);
+      text-transform: uppercase;
+    }
+
+    .throttle-slider {
+      -webkit-appearance: none;
+      width: 140px;
+      height: 8px;
+      background: #1A2536;
+      border-radius: 4px;
+      outline: none;
+    }
+
+    .throttle-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--gtr-blue);
+      box-shadow: 0 0 10px var(--gtr-blue);
+      cursor: pointer;
+    }
+
+    .btn {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 13.5px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 8px 16px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-gas {
+      background: linear-gradient(135deg, #D43A32 0%, #A31E17 100%);
+      color: #FFF;
+      box-shadow: 0 4px 15px rgba(212, 58, 50, 0.4);
+    }
+    .btn-gas:active {
+      transform: scale(0.96);
+    }
+
+    .btn-brake {
+      background: #182333;
+      color: #00E676;
+      border: 1px solid #00E676;
+    }
+    .btn-brake:active {
+      background: #00E676;
+      color: #000;
+    }
+
+    .btn-tab {
+      background: #121A26;
+      color: #8A94A4;
+      border: 1px solid #1E2A3A;
+    }
+    .btn-tab.active {
+      background: #1D2B40;
+      color: #FFF;
+      border-color: var(--gtr-blue);
+      box-shadow: 0 0 10px rgba(46, 123, 214, 0.4);
+    }
+
+    .info-strip {
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--text-label);
+      text-align: center;
+    }
+    .info-strip kbd {
+      background: #1E2A3A;
+      color: #FFF;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-header">
+    <h1>
+      <span>INFINITI Q50s // GT-R MULTI-FUNCTION DISPLAY</span>
+      <span class="nismo-badge">R35 STYLE</span>
+    </h1>
+    <p>Simulador con Relojes Analógicos de Bisel Cromado, Agujas Iluminadas y Telemetría Drag 0-100</p>
+  </div>
+
+  <!-- Cockpit Frame Mockup -->
+  <div class="cockpit-bezel">
+    <div class="bezel-top-trim">
+      <div class="infiniti-logo">INFINITI INTOUCH // LOWER DISPLAY (800×480)</div>
+      <div class="screen-status-indicator">
+        <div class="led-dot" id="ledStatus"></div>
+        <span id="txtStatus">ESTILO ORIGINAL Q50-GTR // CAN SIMULATOR</span>
+      </div>
+    </div>
+
+    <!-- Exact 800x480 Touchscreen Canvas -->
+    <div class="screen-container">
+      <canvas id="dashboardCanvas" width="800" height="480"></canvas>
+    </div>
+  </div>
+
+  <!-- Interactive Controls -->
+  <div class="cockpit-controls">
+    <div class="control-group">
+      <span class="control-label">Páginas:</span>
+      <button class="btn btn-tab active" id="btnTab0" onclick="switchTab(0)">01 MOTOR</button>
+      <button class="btn btn-tab" id="btnTab1" onclick="switchTab(1)">02 LLANTAS</button>
+      <button class="btn btn-tab" id="btnTab2" onclick="switchTab(2)">03 HÍBRIDO</button>
+      <button class="btn btn-tab" id="btnTab3" onclick="switchTab(3)">04 DRAG 0-100</button>
+      <button class="btn btn-tab" id="btnTab4" onclick="switchTab(4)">05 AUDIO FLAC</button>
+    </div>
+
+    <div class="control-group">
+      <button class="btn btn-gas" id="btnGas" onmousedown="pressGas(true)" onmouseup="pressGas(false)" ontouchstart="pressGas(true)" ontouchend="pressGas(false)">
+        🏎️ PISAR A FONDO
+      </button>
+      <button class="btn btn-brake" id="btnBrake" onmousedown="pressBrake(true)" onmouseup="pressBrake(false)" ontouchstart="pressBrake(true)" ontouchend="pressBrake(false)">
+        🛑 FRENAR
+      </button>
+    </div>
+
+    <div class="control-group">
+      <span class="control-label">Acelerador:</span>
+      <input type="range" class="throttle-slider" id="sliderThrottle" min="0" max="100" value="0" oninput="setThrottle(this.value)">
+      <span class="control-label" id="valThrottle">0%</span>
+    </div>
+  </div>
+
+  <div class="info-strip">
+    💡 <strong>Controles:</strong> Presiona <kbd>Espacio</kbd> para acelerar y cronometrar el <strong>0 a 100 km/h</strong>, o las teclas <kbd>1</kbd> a <kbd>5</kbd> para cambiar de pantalla.
+  </div>
+
+  <script>
+    const canvas = document.getElementById('dashboardCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // 0=Motor, 1=Llantas, 2=Híbrido, 3=Drag 0-100, 4=Audio Player
+    let activeTab = 0;
+    let isGasPressed = false;
+    let isBrakePressed = false;
+    let manualThrottle = 0;
+    let autoSim = true;
+    let simTimer = 0;
+
+    // Vehicle Telemetry State
+    const vehicle = {
+      rpm: 900,
+      speedKmh: 0,
+      gear: 'P',
+      gearNum: 0,
+      throttle: 0,
+      boostBar: -0.65,
+      torqueNm: 160,
+      powerHp: 68,
+      coolantC: 88,
+      oilTempC: 93,
+      oilPressureBar: 2.2,
+      batteryVolt: 14.4,
+      lateralG: 0.0,
+      longitudinalG: 0.0,
+      peakG: 1.15,
+      // TPMS
+      tpmsFL: 35.2,
+      tpmsFR: 35.5,
+      tpmsRL: 34.8,
+      tpmsRR: 35.0,
+      tpmsTempFL: 29,
+      tpmsTempFR: 30,
+      tpmsTempRL: 28,
+      tpmsTempRR: 28,
+      // 0-100 Drag Timer
+      dragStatus: 0, // 0=Ready, 1=Running, 2=Finished
+      dragTimer: 0.0,
+      time0to60: 0.0,
+      time0to100: 0.0,
+      best0to100: 4.88,
+      // Audio Player
+      trackTitle: "Midnight City (Flac 24-bit / 96kHz)",
+      trackArtist: "M83 // Studio Master Bose Q50",
+      audioVuL: -12,
+      audioVuR: -10,
+      audioPlaying: true,
+      audioProgress: 0.42
+    };
+
+    function switchTab(index) {
+      activeTab = index;
+      for (let i = 0; i <= 4; i++) {
+        const btn = document.getElementById('btnTab' + i);
+        if (btn) btn.classList.toggle('active', i === activeTab);
+      }
+    }
+
+    function pressGas(pressed) {
+      isGasPressed = pressed;
+      autoSim = false;
+      document.getElementById('txtStatus').innerText = "MODO MANUAL // PILOTO ACTIVO";
+      document.getElementById('ledStatus').style.background = "#D43A32";
+      document.getElementById('ledStatus').style.boxShadow = "0 0 8px #D43A32";
+    }
+
+    function pressBrake(pressed) {
+      isBrakePressed = pressed;
+      autoSim = false;
+    }
+
+    function setThrottle(val) {
+      manualThrottle = parseFloat(val);
+      autoSim = false;
+      document.getElementById('valThrottle').innerText = val + '%';
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') { pressGas(true); e.preventDefault(); }
+      if (e.code === 'ArrowDown') { pressBrake(true); e.preventDefault(); }
+      if (e.key >= '1' && e.key <= '5') switchTab(parseInt(e.key) - 1);
+    });
+    window.addEventListener('keyup', (e) => {
+      if (e.code === 'Space') pressGas(false);
+      if (e.code === 'ArrowDown') pressBrake(false);
+    });
+
+    // Touch / Click on 800x480 Canvas (Bottom tabs bar like OEM InTouch)
+    canvas.addEventListener('mousedown', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = (e.clientX - rect.left) * (canvas.width / rect.width);
+      const y = (e.clientY - rect.top) * (canvas.height / rect.height);
+
+      // Bottom Tabs Bar (y: 434 to 480)
+      if (y >= 434) {
+        const tabW = 800 / 5;
+        const clickedTab = Math.floor(x / tabW);
+        if (clickedTab >= 0 && clickedTab <= 4) {
+          switchTab(clickedTab);
+          return;
+        }
+      }
+
+      // If in Drag tab and click center/bottom: reset drag timer
+      if (activeTab === 3 && y >= 320 && y <= 420) {
+        vehicle.dragStatus = 0;
+        vehicle.dragTimer = 0;
+        vehicle.time0to60 = 0;
+        vehicle.time0to100 = 0;
+      }
+    });
+
+    // Physics Engine Simulation Loop
+    function updatePhysics(dt) {
+      simTimer += dt;
+      if (autoSim) {
+        const cycle = simTimer % 16;
+        if (cycle < 3) {
+          vehicle.gear = '1'; vehicle.gearNum = 1;
+          vehicle.rpm = 1200 + (cycle / 3) * 4800;
+          vehicle.speedKmh = (cycle / 3) * 45;
+          vehicle.throttle = 80;
+        } else if (cycle < 7) {
+          vehicle.gear = '2'; vehicle.gearNum = 2;
+          const p = (cycle - 3) / 4;
+          vehicle.rpm = 2500 + p * 4500;
+          vehicle.speedKmh = 45 + p * 45;
+          vehicle.throttle = 90;
+        } else if (cycle < 11) {
+          vehicle.gear = '3'; vehicle.gearNum = 3;
+          const p = (cycle - 7) / 4;
+          vehicle.rpm = 3000 + p * 4200;
+          vehicle.speedKmh = 90 + p * 40;
+          vehicle.throttle = 95;
+        } else if (cycle < 14) {
+          vehicle.gear = '4'; vehicle.gearNum = 4;
+          const p = (cycle - 11) / 3;
+          vehicle.rpm = 3500 + p * 3000;
+          vehicle.speedKmh = 130 + p * 25;
+          vehicle.throttle = 70;
+        } else {
+          // Hard brake down to 0
+          vehicle.gear = '1'; vehicle.gearNum = 1;
+          const p = (cycle - 14) / 2;
+          vehicle.rpm = Math.max(900, 6500 - p * 5600);
+          vehicle.speedKmh = Math.max(0, 155 - p * 160);
+          vehicle.throttle = 0;
+        }
+        vehicle.lateralG = Math.sin(simTimer * 0.75) * 0.85;
+        vehicle.longitudinalG = (vehicle.throttle / 100) * 0.7 - (cycle >= 14 ? 0.9 : 0);
+      } else {
+        let targetThrottle = manualThrottle;
+        if (isGasPressed) targetThrottle = 100;
+        if (isBrakePressed) targetThrottle = 0;
+
+        vehicle.throttle += (targetThrottle - vehicle.throttle) * 0.15;
+
+        if (isBrakePressed) {
+          vehicle.speedKmh = Math.max(0, vehicle.speedKmh - 65 * dt);
+          vehicle.longitudinalG = -0.85;
+        } else if (vehicle.throttle > 5) {
+          vehicle.speedKmh += (vehicle.throttle / 100) * 40 * dt;
+          vehicle.longitudinalG = (vehicle.throttle / 100) * 0.7;
+        } else {
+          vehicle.speedKmh = Math.max(0, vehicle.speedKmh - 7 * dt);
+          vehicle.longitudinalG = 0;
+        }
+
+        if (vehicle.speedKmh < 1) { vehicle.gear = 'P'; vehicle.rpm = 900 + (vehicle.throttle / 100) * 4500; }
+        else if (vehicle.speedKmh < 44) { vehicle.gear = '1'; vehicle.rpm = 1200 + (vehicle.speedKmh / 44) * 5600; }
+        else if (vehicle.speedKmh < 85) { vehicle.gear = '2'; vehicle.rpm = 2500 + ((vehicle.speedKmh - 44) / 41) * 4600; }
+        else if (vehicle.speedKmh < 130) { vehicle.gear = '3'; vehicle.rpm = 3000 + ((vehicle.speedKmh - 85) / 45) * 4300; }
+        else { vehicle.gear = '4'; vehicle.rpm = 3500 + ((vehicle.speedKmh - 130) / 50) * 3200; }
+      }
+
+      // Boost pressure (bar)
+      vehicle.boostBar = (vehicle.throttle > 20) ? -0.2 + (vehicle.throttle / 100) * 1.6 : -0.7 + (vehicle.rpm / 7500) * 0.3;
+      vehicle.torqueNm = 180 + (vehicle.throttle / 100) * 366;
+      vehicle.powerHp = (vehicle.torqueNm * vehicle.rpm / 9549) * 1.341;
+
+      // 0-100 Drag Timer logic
+      if (vehicle.speedKmh < 0.5) {
+        if (vehicle.dragStatus === 1) {
+          vehicle.dragStatus = 0;
+          vehicle.dragTimer = 0;
+        } else if (vehicle.dragStatus !== 2) {
+          vehicle.dragStatus = 0; // Ready
+          vehicle.dragTimer = 0;
+        }
+      } else if (vehicle.speedKmh >= 0.5 && vehicle.dragStatus === 0) {
+        vehicle.dragStatus = 1; // Launch!
+        vehicle.dragTimer = 0;
+        vehicle.time0to60 = 0;
+        vehicle.time0to100 = 0;
+      }
+
+      if (vehicle.dragStatus === 1) {
+        vehicle.dragTimer += dt;
+        if (vehicle.speedKmh >= 60 && vehicle.time0to60 === 0) {
+          vehicle.time0to60 = vehicle.dragTimer;
+        }
+        if (vehicle.speedKmh >= 100) {
+          vehicle.time0to100 = vehicle.dragTimer;
+          vehicle.dragStatus = 2; // Finished
+          if (vehicle.time0to100 < vehicle.best0to100) {
+            vehicle.best0to100 = vehicle.time0to100;
+          }
+        }
+      }
+
+      // Audio VU simulation
+      vehicle.audioVuL = -18 + Math.sin(simTimer * 5) * 8 + Math.random() * 3;
+      vehicle.audioVuR = -16 + Math.cos(simTimer * 4.5) * 8 + Math.random() * 3;
+    }
+
+    // =========================================================================
+    // AUTHENTIC Q50-GTR DIAL DRAWING (Port of Gauges.java & Theme.java)
+    // =========================================================================
+
+    function drawGtrDial(cx, cy, r, val, min, max, majorTicks, redlineFrom, caption, unit, decimals, valFormat) {
+      ctx.save();
+      ctx.translate(cx, cy);
+
+      // 1. Chrome Bezel (linear gradient metallic ring)
+      const bezelGrad = ctx.createLinearGradient(-r, -r, r, r);
+      bezelGrad.addColorStop(0.0, "#B9C2CE");
+      bezelGrad.addColorStop(0.3, "#6E7784");
+      bezelGrad.addColorStop(0.7, "#3C444F");
+      bezelGrad.addColorStop(1.0, "#B9C2CE");
+
+      ctx.fillStyle = bezelGrad;
+      ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.fill();
+
+      // 2. Dark inner rim
+      ctx.fillStyle = "#05080E";
+      ctx.beginPath(); ctx.arc(0, 0, r * 0.94, 0, Math.PI * 2); ctx.fill();
+
+      // 3. Radial dial face gradient (dark blue/graphite)
+      const dialGrad = ctx.createRadialGradient(0, 0, 0, 0, 0, r * 0.92);
+      dialGrad.addColorStop(0.0, "#16233A");
+      dialGrad.addColorStop(0.85, "#080D15");
+      dialGrad.addColorStop(1.0, "#05080E");
+
+      ctx.fillStyle = dialGrad;
+      ctx.beginPath(); ctx.arc(0, 0, r * 0.925, 0, Math.PI * 2); ctx.fill();
+
+      ctx.strokeStyle = "#223148";
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      const arcStart = 150 * (Math.PI / 180);
+      const arcSweep = 240 * (Math.PI / 180);
+      const trackR = r * 0.80;
+
+      // 4. Redline Arc
+      if (redlineFrom && redlineFrom > min && redlineFrom < max) {
+        const rf = (redlineFrom - min) / (max - min);
+        const fromAngle = arcStart + arcSweep * rf;
+        ctx.beginPath();
+        ctx.arc(0, 0, trackR, fromAngle, arcStart + arcSweep);
+        ctx.strokeStyle = "#D43A32";
+        ctx.lineWidth = r * 0.055;
+        ctx.stroke();
+      }
+
+      // 5. Minor Ticks
+      const minorSteps = majorTicks * 2;
+      const tickOuter = trackR + r * 0.03;
+      ctx.strokeStyle = "#6B7687";
+      ctx.lineWidth = 1.6;
+      for (let i = 1; i < minorSteps; i += 2) {
+        const f = i / minorSteps;
+        const a = arcStart + arcSweep * f;
+        const cos = Math.cos(a), sin = Math.sin(a);
+        ctx.beginPath();
+        ctx.moveTo(cos * (tickOuter - r * 0.055), sin * (tickOuter - r * 0.055));
+        ctx.lineTo(cos * tickOuter, sin * tickOuter);
+        ctx.stroke();
+      }
+
+      // 6. Major Ticks & Numbers
+      ctx.font = `bold ${Math.round(r * 0.12)}px 'Rajdhani', sans-serif`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+
+      for (let i = 0; i <= majorTicks; i++) {
+        const f = i / majorTicks;
+        const tickVal = min + (max - min) * f;
+        const isHot = (redlineFrom && tickVal >= redlineFrom - 0.01);
+        const a = arcStart + arcSweep * f;
+        const cos = Math.cos(a), sin = Math.sin(a);
+
+        ctx.strokeStyle = isHot ? "#D43A32" : "#DFE4EE";
+        ctx.lineWidth = 2.8;
+        ctx.beginPath();
+        ctx.moveTo(cos * (tickOuter - r * 0.105), sin * (tickOuter - r * 0.105));
+        ctx.lineTo(cos * tickOuter, sin * tickOuter);
+        ctx.stroke();
+
+        const lr = tickOuter - r * 0.185;
+        ctx.fillStyle = isHot ? "#D43A32" : "#DFE4EE";
+        const displayTick = (max >= 1000) ? Math.round(tickVal / 1000) : tickVal.toFixed(decimals);
+        ctx.fillText(displayTick, cos * lr, sin * lr);
+      }
+
+      // 7. Caption & Subcaption
+      ctx.fillStyle = "#F2F5FA";
+      ctx.font = `bold ${Math.round(r * 0.14)}px 'Orbitron', sans-serif`;
+      ctx.fillText(caption, 0, -r * 0.32);
+
+      if (unit) {
+        ctx.fillStyle = "#8A94A4";
+        ctx.font = `bold ${Math.round(r * 0.10)}px 'Rajdhani', sans-serif`;
+        ctx.fillText(unit, 0, -r * 0.18);
+      }
+
+      // 8. Digital Value Display (Lower dial)
+      ctx.fillStyle = "#FFFFFF";
+      ctx.font = `bold ${Math.round(r * 0.28)}px 'Orbitron', sans-serif`;
+      ctx.fillText(valFormat || val.toFixed(decimals), 0, r * 0.46);
+
+      // 9. Authentic Slender Pointer Needle
+      const frac = Math.min(1, Math.max(0, (val - min) / (max - min)));
+      const needleAngle = arcStart + arcSweep * frac;
+      const nCos = Math.cos(needleAngle), nSin = Math.sin(needleAngle);
+      const isHotNeedle = (redlineFrom && val >= redlineFrom);
+
+      // Needle line
+      ctx.strokeStyle = isHotNeedle ? "#D43A32" : "#FFFFFF";
+      ctx.lineWidth = r * 0.03;
+      ctx.beginPath();
+      ctx.moveTo(-nCos * r * 0.15, -nSin * r * 0.15);
+      ctx.lineTo(nCos * r * 0.58, nSin * r * 0.58);
+      ctx.stroke();
+
+      // Central Hub Bezel
+      ctx.fillStyle = "#6E7784";
+      ctx.beginPath(); ctx.arc(0, 0, r * 0.09, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = "#05080E";
+      ctx.beginPath(); ctx.arc(0, 0, r * 0.055, 0, Math.PI * 2); ctx.fill();
+
+      ctx.restore();
+    }
+
+    function drawGtrTile(x, y, w, h, label, val, unit, isWarn) {
+      // Background gradient
+      const tileGrad = ctx.createLinearGradient(x, y, x, y + h);
+      tileGrad.addColorStop(0, "#121A26");
+      tileGrad.addColorStop(1, "#0A0F17");
+
+      ctx.fillStyle = tileGrad;
+      roundRect(ctx, x, y, w, h, 5);
+      ctx.fill();
+
+      ctx.strokeStyle = isWarn ? "#D43A32" : "#1E2A3A";
+      ctx.lineWidth = isWarn ? 2 : 1;
+      ctx.stroke();
+
+      // Top label
+      ctx.fillStyle = "#8A94A4";
+      ctx.font = "bold 11.5px Rajdhani, sans-serif";
+      ctx.textAlign = "left";
+      ctx.fillText(label, x + 12, y + 18);
+
+      // Large value + unit
+      ctx.fillStyle = isWarn ? "#D43A32" : "#F2F5FA";
+      ctx.font = "bold 26px Orbitron, sans-serif";
+      ctx.fillText(val, x + 12, y + h - 14);
+
+      const tw = ctx.measureText(val).width;
+      ctx.fillStyle = "#8A94A4";
+      ctx.font = "bold 13px Rajdhani, sans-serif";
+      ctx.fillText(unit, x + 18 + tw, y + h - 14);
+    }
+
+    // =========================================================================
+    // TAB DRAWING IMPLEMENTATIONS
+    // =========================================================================
+
+    // Top status bar (42px)
+    function drawTopBar() {
+      ctx.fillStyle = "#080D14";
+      ctx.fillRect(0, 0, 800, 40);
+
+      ctx.fillStyle = "#8A94A4";
+      ctx.font = "bold 13px Rajdhani, sans-serif";
+      ctx.textAlign = "left";
+      ctx.fillText("INFINITI Q50s // GT-R MFD", 16, 25);
+
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#00E5FF";
+      ctx.fillText("MODO ACTIVO: SPORT+", 400, 25);
+
+      const now = new Date();
+      const timeStr = now.toTimeString().substring(0, 5);
+      ctx.textAlign = "right";
+      ctx.fillStyle = "#8A94A4";
+      ctx.fillText("28°C  |  " + timeStr, 784, 25);
+    }
+
+    // Bottom InTouch Tabs Bar (46px, y: 434 to 480)
+    function drawBottomTabs() {
+      ctx.fillStyle = "#0A0F17";
+      ctx.fillRect(0, 434, 800, 46);
+      ctx.strokeStyle = "#1E2A3A";
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(0, 434); ctx.lineTo(800, 434); ctx.stroke();
+
+      const tabs = ["ДВИГАТЕЛЬ (MOTOR)", "ШАССИ (LLANTAS)", "HÍBRIDO HEV", "DRAG 0-100", "AUDIO FLAC"];
+      const tabW = 800 / 5;
+
+      for (let i = 0; i < 5; i++) {
+        const tx = i * tabW;
+        const isActive = (activeTab === i);
+
+        if (isActive) {
+          ctx.fillStyle = "#16233A";
+          ctx.fillRect(tx + 2, 436, tabW - 4, 42);
+          ctx.fillStyle = "#2E7BD6";
+          ctx.fillRect(tx + 2, 476, tabW - 4, 4); // active line
+        }
+
+        ctx.fillStyle = isActive ? "#FFFFFF" : "#8A94A4";
+        ctx.font = `bold ${isActive ? 12.5 : 12}px 'Rajdhani', sans-serif`;
+        ctx.textAlign = "center";
+        ctx.fillText(tabs[i], tx + tabW / 2, 460);
+      }
+    }
+
+    // 01 MOTOR (Dual GT-R dials: RPM & BOOST)
+    function drawMotorPage() {
+      // Left Dial: RPM (0 to 8000)
+      drawGtrDial(230, 165, 122, vehicle.rpm, 0, 8000, 8, 6800, "RPM", "x1000", 0, Math.round(vehicle.rpm).toString());
+
+      // Center Gear & Speed
+      ctx.fillStyle = "#FFC107";
+      ctx.font = "bold 64px Orbitron, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(vehicle.gear, 400, 155);
+
+      ctx.fillStyle = "#FFFFFF";
+      ctx.font = "bold 38px Orbitron, sans-serif";
+      ctx.fillText(Math.round(vehicle.speedKmh), 400, 205);
+
+      ctx.fillStyle = "#8A94A4";
+      ctx.font = "bold 12px Rajdhani, sans-serif";
+      ctx.fillText("KM / H", 400, 224);
+
+      // Right Dial: BOOST (-1 to +2 bar)
+      drawGtrDial(570, 165, 122, vehicle.boostBar, -1.0, 2.0, 6, 1.8, "BOOST", "bar", 2);
+
+      // Bottom row: 4 tiles
+      const tw = (800 - 28 - 30) / 4;
+      const ty = 338;
+      const th = 82;
+      drawGtrTile(14 + 0 * (tw + 10), ty, tw, th, "ОХЛ. ЖИДКОСТЬ", Math.round(vehicle.coolantC), "°C", vehicle.coolantC > 105);
+      drawGtrTile(14 + 1 * (tw + 10), ty, tw, th, "ТЕМП. МАСЛА", Math.round(vehicle.oilTempC), "°C", vehicle.oilTempC > 115);
+      drawGtrTile(14 + 2 * (tw + 10), ty, tw, th, "ДАВЛ. МАСЛА", vehicle.oilPressureBar.toFixed(1), "bar", false);
+      drawGtrTile(14 + 3 * (tw + 10), ty, tw, th, "ДРОССЕЛЬ", Math.round(vehicle.throttle), "%", false);
+    }
+
+    // 02 LLANTAS / TPMS
+    function drawTiresPage() {
+      const cardW = 245;
+      const cardH = 160;
+      const leftX = 14;
+      const rightX = 800 - 14 - cardW;
+
+      drawGtrTireTile(leftX, 55, cardW, cardH, "DELANTERA IZQ (FL)", vehicle.tpmsFL, vehicle.tpmsTempFL);
+      drawGtrTireTile(rightX, 55, cardW, cardH, "DELANTERA DER (FR)", vehicle.tpmsFR, vehicle.tpmsTempFR);
+      drawGtrTireTile(leftX, 235, cardW, cardH, "TRASERA IZQ (RL)", vehicle.tpmsRL, vehicle.tpmsTempRL);
+      drawGtrTireTile(rightX, 235, cardW, cardH, "TRASERA DER (RR)", vehicle.tpmsRR, vehicle.tpmsTempRR);
+
+      // Center car wireframe
+      drawGtrCarWireframe(400, 225);
+
+      // Bottom strip
+      ctx.fillStyle = "#121A26";
+      roundRect(ctx, 14, 402, 772, 26, 4);
+      ctx.fill();
+      ctx.fillStyle = "#2E7BD6";
+      ctx.font = "bold 11.5px Rajdhani, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("СИСТЕМА КОНТРОЛЯ ДАВЛЕНИЯ В ШИНАХ // TPMS NISSAN/INFINITI OK", 400, 419);
+    }
+
+    function drawGtrTireTile(x, y, w, h, label, psi, temp) {
+      const isWarn = psi < 29.0;
+      const isCrit = psi < 26.0;
+      const strokeColor = isCrit ? "#D43A32" : (isWarn ? "#E8A33A" : "#2E7BD6");
+
+      ctx.fillStyle = "#121A26";
+      roundRect(ctx, x, y, w, h, 6);
+      ctx.fill();
+
+      ctx.strokeStyle = strokeColor;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.fillStyle = "#8A94A4";
+      ctx.font = "bold 12px Rajdhani, sans-serif";
+      ctx.textAlign = "left";
+      ctx.fillText(label, x + 14, y + 24);
+
+      // Huge 48px PSI
+      ctx.fillStyle = strokeColor;
+      ctx.font = "bold 48px Orbitron, sans-serif";
+      const psiStr = psi.toFixed(1);
+      ctx.fillText(psiStr, x + 14, y + 84);
+
+      const tw = ctx.measureText(psiStr).width;
+      ctx.fillStyle = "#8A94A4";
+      ctx.font = "bold 20px Rajdhani, sans-serif";
+      ctx.fillText("PSI", x + 20 + tw, y + 80);
+
+      ctx.fillStyle = "#FFF";
+      ctx.font = "bold 16px Rajdhani, sans-serif";
+      ctx.fillText("TEMP: " + temp + " °C", x + 14, y + 118);
+
+      // Status pill
+      ctx.fillStyle = "#1B283D";
+      roundRect(ctx, x + 14, y + 130, w - 28, 20, 3);
+      ctx.fill();
+      ctx.fillStyle = strokeColor;
+      ctx.font = "bold 11px Rajdhani, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(isCrit ? "ALERTA: BAJA PRESIÓN" : (isWarn ? "REVISAR PRESIÓN" : "СОСТОЯНИЕ: НОРМА"), x + w / 2, y + 144);
+    }
+
+    function drawGtrCarWireframe(cx, cy) {
+      ctx.save();
+      ctx.translate(cx, cy);
+
+      ctx.fillStyle = "#0B111A";
+      ctx.strokeStyle = "#2E7BD6";
+      ctx.lineWidth = 2;
+
+      ctx.beginPath();
+      ctx.moveTo(-28, -85);
+      ctx.quadraticCurveTo(0, -96, 28, -85);
+      ctx.lineTo(40, -45);
+      ctx.lineTo(40, 50);
+      ctx.lineTo(30, 85);
+      ctx.quadraticCurveTo(0, 92, -30, 85);
+      ctx.lineTo(-40, 50);
+      ctx.lineTo(-40, -45);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(-40, -40); ctx.lineTo(-75, -40);
+      ctx.moveTo(40, -40); ctx.lineTo(75, -40);
+      ctx.moveTo(-40, 45); ctx.lineTo(-75, 45);
+      ctx.moveTo(40, 45); ctx.lineTo(75, 45);
+      ctx.stroke();
+
+      ctx.fillStyle = "#FFF";
+      ctx.font = "bold 13px Orbitron, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("Q50s", 0, -4);
+      ctx.fillStyle = "#2E7BD6";
+      ctx.font = "bold 11px Rajdhani, sans-serif";
+      ctx.fillText("HEV", 0, 14);
+
+      ctx.restore();
+    }
+
+    // 03 HÍBRIDO & G-FORCE RADAR
+    function drawHybridPage() {
+      const halfW = 370;
+      const leftX = 14;
+      const rightX = 416;
+
+      // LEFT: HYBRID POWERTRAIN
+      ctx.fillStyle = "#121A26";
+      roundRect(ctx, leftX, 55, halfW, 365, 8);
+      ctx.fill();
+      ctx.strokeStyle = "#1E2A3A";
+      ctx.stroke();
+
+      ctx.fillStyle = "#2E7BD6";
+      ctx.font = "bold 15px Orbitron, sans-serif";
+      ctx.textAlign = "left";
+      ctx.fillText("ГИБРИДНАЯ УСТАНОВКА // HEV", leftX + 16, 85);
+
+      const isEv = (vehicle.rpm < 300 && vehicle.speedKmh > 1) || (vehicle.speedKmh === 0 && vehicle.throttle < 5);
+      ctx.fillStyle = isEv ? "rgba(0, 230, 118, 0.15)" : "#0A0F17";
+      roundRect(ctx, leftX + 16, 105, halfW - 32, 42, 5);
+      ctx.fill();
+      ctx.strokeStyle = isEv ? "#00E676" : "#1E2A3A";
+      ctx.stroke();
+
+      ctx.fillStyle = isEv ? "#00E676" : "#8A94A4";
+      ctx.font = "bold 13.5px Rajdhani, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(isEv ? "⚡ ЭЛЕКТРОРЕЖИМ (EV MODE) АКТИВЕН" : "⛽ ДВИГАТЕЛЬ V6 3.5L АКТИВЕН", leftX + halfW / 2, 131);
+
+      // Power Bar
+      const barW = halfW - 32;
+      ctx.fillStyle = "#8A94A4";
+      ctx.font = "bold 12px Rajdhani, sans-serif";
+      ctx.textAlign = "left";
+      ctx.fillText("МОЩНОСТЬ (POWER)", leftX + 16, 175);
+      ctx.fillStyle = "#0A0F17";
+      roundRect(ctx, leftX + 16, 185, barW, 20, 3);
+      ctx.fill();
+      const pFrac = Math.min(1, vehicle.throttle / 100);
+      if (pFrac > 0) {
+        ctx.fillStyle = "#2E7BD6";
+        roundRect(ctx, leftX + 16, 185, barW * pFrac, 20, 3);
+        ctx.fill();
+      }
+
+      // Regen Bar
+      ctx.fillStyle = "#8A94A4";
+      ctx.fillText("РЕГЕНЕРАЦИЯ (CHARGE)", leftX + 16, 235);
+      ctx.fillStyle = "#0A0F17";
+      roundRect(ctx, leftX + 16, 245, barW, 20, 3);
+      ctx.fill();
+      const isRegen = isBrakePressed || (vehicle.speedKmh > 10 && vehicle.throttle < 5);
+      if (isRegen) {
+        ctx.fillStyle = "#00E676";
+        roundRect(ctx, leftX + 16, 245, barW * 0.72, 20, 3);
+        ctx.fill();
+      }
+
+      ctx.fillStyle = "#FFF";
+      ctx.font = "bold 26px Orbitron, sans-serif";
+      ctx.fillText("14.4 V", leftX + 16, 330);
+      ctx.fillStyle = "#8A94A4";
+      ctx.font = "bold 12px Rajdhani, sans-serif";
+      ctx.fillText("НАПРЯЖЕНИЕ HV", leftX + 16, 302);
+
+      ctx.fillStyle = "#2E7BD6";
+      ctx.font = "bold 24px Orbitron, sans-serif";
+      ctx.fillText("50 kW (68 HP)", leftX + 195, 330);
+      ctx.fillStyle = "#8A94A4";
+      ctx.font = "bold 12px Rajdhani, sans-serif";
+      ctx.fillText("ЭЛЕКТРОМОТОР", leftX + 195, 302);
+
+      // RIGHT: G-FORCE RADAR
+      ctx.fillStyle = "#121A26";
+      roundRect(ctx, rightX, 55, halfW, 365, 8);
+      ctx.fill();
+      ctx.strokeStyle = "#1E2A3A";
+      ctx.stroke();
+
+      ctx.fillStyle = "#D43A32";
+      ctx.font = "bold 15px Orbitron, sans-serif";
+      ctx.textAlign = "left";
+      ctx.fillText("G-FORCE RADAR // G-BOWL", rightX + 16, 85);
+
+      const rcx = rightX + halfW / 2;
+      const rcy = 215;
+      const rr = 95;
+
+      ctx.strokeStyle = "#1E2A3A";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(rcx, rcy, rr * 0.33, 0, Math.PI * 2);
+      ctx.arc(rcx, rcy, rr * 0.66, 0, Math.PI * 2);
+      ctx.arc(rcx, rcy, rr, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.strokeStyle = "#2E3B4E";
+      ctx.beginPath();
+      ctx.moveTo(rcx - rr - 10, rcy); ctx.lineTo(rcx + rr + 10, rcy);
+      ctx.moveTo(rcx, rcy - rr - 10); ctx.lineTo(rcx, rcy + rr + 10);
+      ctx.stroke();
+
+      const dotX = rcx + Math.max(-rr, Math.min(rr, (vehicle.lateralG / 1.5) * rr));
+      const dotY = rcy - Math.max(-rr, Math.min(rr, (vehicle.longitudinalG / 1.5) * rr));
+
+      ctx.fillStyle = "rgba(212, 58, 50, 0.3)";
+      ctx.beginPath(); ctx.arc(dotX, dotY, 14, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = "#D43A32";
+      ctx.beginPath(); ctx.arc(dotX, dotY, 7, 0, Math.PI * 2); ctx.fill();
+
+      // Readouts
+      ctx.fillStyle = "#FFF";
+      ctx.font = "bold 18px Orbitron, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText((vehicle.lateralG >= 0 ? "+" : "") + vehicle.lateralG.toFixed(2) + " G", rcx - 85, 375);
+      ctx.fillText((vehicle.longitudinalG >= 0 ? "+" : "") + vehicle.longitudinalG.toFixed(2) + " G", rcx, 375);
+      ctx.fillStyle = "#D43A32";
+      ctx.fillText(vehicle.peakG.toFixed(2) + " G", rcx + 85, 375);
+
+      ctx.fillStyle = "#8A94A4";
+      ctx.font = "bold 11px Rajdhani, sans-serif";
+      ctx.fillText("БОКОВОЕ", rcx - 85, 350);
+      ctx.fillText("РАЗГОН / ТОРМ", rcx, 350);
+      ctx.fillText("ПИКОВОЕ", rcx + 85, 350);
+    }
+
+    // 04 DRAG 0-100 (Authentic GT-R Dial style!)
+    function drawDragPage() {
+      // Central Speed Drag Dial with Chrome Bezel
+      drawGtrDial(250, 200, 130, vehicle.speedKmh, 0, 120, 6, 100, "SPEED", "KM/H", 0, Math.round(vehicle.speedKmh).toString());
+
+      // Right: Staging status & Giant Stopwatch
+      const rightX = 420;
+      const rightW = 366;
+
+      // Status pill
+      ctx.fillStyle = "#121A26";
+      roundRect(ctx, rightX, 55, rightW, 46, 6);
+      ctx.fill();
+
+      let stText = "🚦 ГОТОВ К ЗАЕЗДУ (СТОИТЕ НА МЕСТЕ)";
+      let stColor = "#00E676";
+      if (vehicle.dragStatus === 1) {
+        stText = "⚡ ЗАМЕР 0-100 В ПРОЦЕССЕ!";
+        stColor = "#E8A33A";
+      } else if (vehicle.dragStatus === 2) {
+        stText = "🏁 ЗАЕЗД ЗАВЕРШЁН!";
+        stColor = "#2E7BD6";
+      }
+      ctx.strokeStyle = stColor;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      ctx.fillStyle = stColor;
+      ctx.font = "bold 14px Rajdhani, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(stText, rightX + rightW / 2, 84);
+
+      // Giant Stopwatch Card
+      ctx.fillStyle = "#121A26";
+      roundRect(ctx, rightX, 115, rightW, 140, 8);
+      ctx.fill();
+      ctx.strokeStyle = "#1E2A3A";
+      ctx.stroke();
+
+      const timeVal = (vehicle.dragStatus === 2) ? vehicle.time0to100 : vehicle.dragTimer;
+      ctx.fillStyle = (vehicle.dragStatus === 2) ? "#00E676" : "#FFFFFF";
+      ctx.font = "bold 56px Orbitron, sans-serif";
+      ctx.fillText(timeVal.toFixed(2) + " s", rightX + rightW / 2, 195);
+
+      ctx.fillStyle = "#8A94A4";
+      ctx.font = "bold 13px Rajdhani, sans-serif";
+      ctx.fillText("ВРЕМЯ РАЗГОНА ДО 100 КМ/Ч", rightX + rightW / 2, 230);
+
+      // 3 Split tiles
+      const tw = (rightW - 16) / 3;
+      const ty = 270;
+      const th = 85;
+
+      // 0-60
+      drawGtrTile(rightX + 0 * (tw + 8), ty, tw, th, "0 - 60 KM/H", vehicle.time0to60 > 0 ? vehicle.time0to60.toFixed(2) : "--.--", "s", false);
+      // 0-100
+      drawGtrTile(rightX + 1 * (tw + 8), ty, tw, th, "0 - 100 KM/H", vehicle.time0to100 > 0 ? vehicle.time0to100.toFixed(2) : "--.--", "s", false);
+      // Best record
+      drawGtrTile(rightX + 2 * (tw + 8), ty, tw, th, "🏆 РЕКОРД", vehicle.best0to100.toFixed(2), "s", false);
+
+      // Touch reset prompt
+      ctx.fillStyle = "#121A26";
+      roundRect(ctx, rightX, 368, rightW, 40, 6);
+      ctx.fill();
+      ctx.strokeStyle = "#1E2A3A";
+      ctx.stroke();
+      ctx.fillStyle = "#8A94A4";
+      ctx.font = "bold 12px Rajdhani, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("НАЖМИТЕ ЗДЕСЬ ДЛЯ СБРОСА ЗАМЕРА", rightX + rightW / 2, 393);
+    }
+
+    // 05 AUDIO FLAC PLAYER (With GT-R chrome needle VU meters!)
+    function drawAudioPage() {
+      // Left Dial: VU Meter Canal Izquierdo (dB)
+      drawGtrDial(230, 165, 120, vehicle.audioVuL, -30, 0, 6, -3, "VU LEFT", "dB", 0);
+
+      // Right Dial: VU Meter Canal Derecho (dB)
+      drawGtrDial(570, 165, 120, vehicle.audioVuR, -30, 0, 6, -3, "VU RIGHT", "dB", 0);
+
+      // Center album art / audio badge
+      ctx.fillStyle = "#121A26";
+      roundRect(ctx, 350, 105, 100, 100, 10);
+      ctx.fill();
+      ctx.strokeStyle = "#2E7BD6";
+      ctx.stroke();
+
+      ctx.fillStyle = "#2E7BD6";
+      ctx.font = "bold 32px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("♫", 400, 165);
+
+      // Song details
+      ctx.fillStyle = "#FFF";
+      ctx.font = "bold 18px Orbitron, sans-serif";
+      ctx.fillText(vehicle.trackTitle, 400, 315);
+
+      ctx.fillStyle = "#8A94A4";
+      ctx.font = "bold 13px Rajdhani, sans-serif";
+      ctx.fillText(vehicle.trackArtist, 400, 340);
+
+      // Progress bar
+      const barX = 150;
+      const barY = 365;
+      const barW = 500;
+      ctx.fillStyle = "#0A0F17";
+      roundRect(ctx, barX, barY, barW, 8, 4);
+      ctx.fill();
+      ctx.fillStyle = "#2E7BD6";
+      roundRect(ctx, barX, barY, barW * vehicle.audioProgress, 8, 4);
+      ctx.fill();
+
+      ctx.fillStyle = "#8A94A4";
+      ctx.font = "bold 12px Rajdhani, sans-serif";
+      ctx.textAlign = "left";
+      ctx.fillText("01:45", barX, barY + 22);
+      ctx.textAlign = "right";
+      ctx.fillText("04:12", barX + barW, barY + 22);
+
+      // Playback controls (icons)
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#FFF";
+      ctx.font = "bold 22px sans-serif";
+      ctx.fillText("⏮", 340, 408);
+      ctx.fillText("⏸", 400, 408);
+      ctx.fillText("⏭", 460, 408);
+    }
+
+    // Helper for rounded rectangles
+    function roundRect(ctx, x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.lineTo(x + w - r, y);
+      ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+      ctx.lineTo(x + w, y + h - r);
+      ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+      ctx.lineTo(x + r, y + h);
+      ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+      ctx.lineTo(x, y + r);
+      ctx.quadraticCurveTo(x, y, x + r, y);
+      ctx.closePath();
+    }
+
+    // Main 30 FPS Render Loop
+    let lastTime = performance.now();
+    function loop(currentTime) {
+      const dt = (currentTime - lastTime) / 1000;
+      lastTime = currentTime;
+
+      updatePhysics(dt);
+
+      ctx.clearRect(0, 0, 800, 480);
+      drawTopBar();
+
+      switch (activeTab) {
+        case 0: drawMotorPage(); break;
+        case 1: drawTiresPage(); break;
+        case 2: drawHybridPage(); break;
+        case 3: drawDragPage(); break;
+        case 4: drawAudioPage(); break;
+      }
+
+      drawBottomTabs();
+      requestAnimationFrame(loop);
+    }
+
+    requestAnimationFrame(loop);
+  </script>
+</body>
+</html>

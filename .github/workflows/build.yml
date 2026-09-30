@@ -289,13 +289,13 @@ jobs:
         with:
           name: Q50-GTR-Plus-v0.7-InTouch
           path: |
-            artifact/Q50-GTR-Plus-v0.7.apk
-            artifact/Q50-GTR-Plus-v0.7.apk.sha256
-            artifact/Q50-GTR-Plus-v0.7.epk
-            artifact/Q50-GTR-Plus-v0.7.epk.sha256
-            artifact/signature.txt
-            artifact/badging.txt
-            artifact/epk-info.txt
-            artifact/BUILD-PROVENANCE.txt
+            Q50-gtr-/artifact/Q50-GTR-Plus-v0.7.apk
+            Q50-gtr-/artifact/Q50-GTR-Plus-v0.7.apk.sha256
+            Q50-gtr-/artifact/Q50-GTR-Plus-v0.7.epk
+            Q50-gtr-/artifact/Q50-GTR-Plus-v0.7.epk.sha256
+            Q50-gtr-/artifact/signature.txt
+            Q50-gtr-/artifact/badging.txt
+            Q50-gtr-/artifact/epk-info.txt
+            Q50-gtr-/artifact/BUILD-PROVENANCE.txt
           if-no-files-found: error
           retention-days: 90

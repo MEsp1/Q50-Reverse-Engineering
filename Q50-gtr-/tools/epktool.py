@@ -48,6 +48,13 @@ import os
 import struct
 import sys
 
+if hasattr(sys.stdout, 'reconfigure'):
+    try:
+        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+        sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+    except Exception:
+        pass
+
 MAGIC = b'.epk'
 VERSION = 2
 IV = bytes([0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef]) + b'\x00' * 8

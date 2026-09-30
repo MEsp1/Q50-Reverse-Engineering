@@ -3,7 +3,9 @@ firmware/
 dumps/
 decompiled/
 private/
-keys/
+/keys/
+!/keys/obu_cert.pem
+!Q50-gtr-/keys/
 *.img
 *.bin
 *.epk
